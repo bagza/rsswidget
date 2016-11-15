@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/titlebar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/widget_title_bar_height"
+        android:background="@color/colorPrimary"
+        android:layout_weight="0"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="14dp"
+            android:layout_toLeftOf="@+id/settingsButton">
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextTitle"
+                tools:text="Title"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/textSubtitle"
+                android:ellipsize="end"/>
+
+            <TextView
+                android:id="@+id/textSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextSubtitle"
+                tools:text="Subtitle"
+                android:layout_below="@+id/textTitle"
+                android:layout_alignParentStart="true"
+                android:ellipsize="end"/>
+
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/settingsButton"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_settings_white_36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="4dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textBody"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:textAppearance="@style/TextBody"
+        tools:text="Sample news text!"/>
+
+    <RelativeLayout
+        android:id="@+id/bottombar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/widget_bottom_bar_height"
+        android:background="@color/colorPrimaryDark">
+
+    </RelativeLayout>
+
+
+</LinearLayout>

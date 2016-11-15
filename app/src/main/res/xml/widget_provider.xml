@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="200dp"
+    android:minHeight="250dp"
+    android:updatePeriodMillis="0"
+    android:initialLayout="@layout/single_item_rss_widget"
+    android:previewImage="@drawable/ic_notifications_black_24dp"
+    android:configure="com.example.gryazin.rsswidget.SettingsActivity"
+    android:resizeMode="horizontal|vertical"
+    android:widgetCategory="home_screen"
+/>
