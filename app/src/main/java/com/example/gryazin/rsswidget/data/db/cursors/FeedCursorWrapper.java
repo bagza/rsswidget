@@ -38,7 +38,7 @@ public class FeedCursorWrapper extends TypedCursorWrapper<FeedItem> {
         if (!isNull(getColumnIndex(FEED_PUBDATE))){
             feedItem.setDate(new Date(getLong(FEED_PUBDATE, 0)));
         }
-        return null;
+        return feedItem;
     }
 
     public static ContentValues toCv(FeedItem feedItem){

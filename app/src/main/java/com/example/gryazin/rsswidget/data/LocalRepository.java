@@ -66,4 +66,9 @@ public class LocalRepository implements Repository {
                 .orElseThrow(() -> new IllegalArgumentException("No such widgetid in settings"));
         return mSetting.getRssUrl();
     }
+
+    @Override
+    public void saveTimestamp(long timestamp) {
+        preferences.storeUpdateTimestamp(timestamp);
+    }
 }

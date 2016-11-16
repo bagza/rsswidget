@@ -1,6 +1,9 @@
 package com.example.gryazin.rsswidget.data;
 
+import android.os.SystemClock;
+
 import com.example.gryazin.rsswidget.data.db.RssDatabase;
+import com.example.gryazin.rsswidget.domain.Channel;
 import com.example.gryazin.rsswidget.utils.DateUtils;
 import com.example.gryazin.rsswidget.utils.Utils;
 import com.example.gryazin.rsswidget.domain.FeedItem;
@@ -12,6 +15,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.UUID;
 
 /**
@@ -20,14 +24,16 @@ import java.util.UUID;
 
 public class FakeRepository extends LocalRepository{
 
-    private SortedSet<FeedItem> feedItems1;
-    private SortedSet<FeedItem> feedItems2;
+    private SortedSet<FeedItem> feedItems1 = new TreeSet<>();
+    private SortedSet<FeedItem> feedItems2 = new TreeSet<>();
     private static final String LONG_DESCRIPTION = " Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
 
     public FakeRepository(RssDatabase database, Preferences preferences) {
         super(database, preferences);
         bakeFakes();
-
+        storeFeeds(feedItems1);
+        storeFeeds(feedItems2);
+        saveTimestamp(System.currentTimeMillis());
     }
 
     private void bakeFakes(){
@@ -42,8 +48,10 @@ public class FakeRepository extends LocalRepository{
         FeedItem feedItem = new FeedItem();
         feedItem.setDate(randomDate);
         feedItem.setGuid(UUID.randomUUID().toString());
-        feedItem.setTitle(randomDate.toString());
+        feedItem.setTitle("Title" + DateUtils.randBetween(0, 10));
         feedItem.setDescription(randomDate.toString() + LONG_DESCRIPTION);
+        feedItem.setUrl("url");
+        feedItem.setChannel(new Channel("https://stackoverflow.com/jobs/feed"));
         return feedItem;
     }
 }

@@ -21,18 +21,18 @@ import android.view.MenuItem;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
-/**
- * A {@link PreferenceActivity} that presents a set of application settings. On
- * handset devices, settings are presented as a single list. On tablets,
- * settings are split by category, with category headers shown to the left of
- * the list of settings.
- * <p>
- * See <a href="http://developer.android.com/design/patterns/settings.html">
- * Android Design: Settings</a> for design guidelines and the <a
- * href="http://developer.android.com/guide/topics/ui/settings.html">Settings
- * API Guide</a> for more information on developing a Settings UI.
- */
+import com.example.gryazin.rsswidget.data.Repository;
+import com.example.gryazin.rsswidget.data.services.UpdateScheduler;
+import com.example.gryazin.rsswidget.domain.RssSettings;
+
+import javax.inject.Inject;
+
 public class SettingsActivity extends PreferenceActivity {
+
+    @Inject
+    UpdateScheduler updateScheduler;
+    @Inject
+    Repository repository;
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -99,12 +99,16 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        inject();
         setupActionBar();
         setDefaultResultIntent();
-
         // Display the fragment as the main content.
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 new GeneralPreferenceFragment()).commit();
+    }
+
+    private void inject(){
+        RssApplication.getAppComponent().inject(this);
     }
 
     /**
@@ -145,10 +149,26 @@ public class SettingsActivity extends PreferenceActivity {
     }
 
     public void confirmAndRunRss(String url){
+        Toast.makeText(this, "CONFIRM: " + getAppWidgetId() + ", " + url, Toast.LENGTH_SHORT).show();
+        saveSettings(url, getAppWidgetId());
+        runService();
+        finishOk();
+    }
+
+    private void saveSettings(String url, int appWidgetId){
+        RssSettings settings = new RssSettings(appWidgetId, url);
+        //FIXME too lazy to background it, though it MIGHT lock if db is locked
+        repository.saveSettings(settings);
+    }
+
+    private void runService(){
+        updateScheduler.refreshWidgetNowAndScheduleUpdates(getAppWidgetId());
+    }
+
+    private void finishOk(){
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, getAppWidgetId());
         setResult(RESULT_OK, resultValue);
-        Toast.makeText(this, "CONFIRM: " + getAppWidgetId() + ", " + url, Toast.LENGTH_SHORT).show();
         finish();
     }
 

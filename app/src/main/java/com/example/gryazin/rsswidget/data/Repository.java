@@ -17,9 +17,8 @@ public interface Repository {
     SortedSet<? extends FeedItem> getAllFeedsByWidgetId(int widgetId) throws Throwable;
     Collection<? extends RssSettings> getAllSettings();
     UpdateStatus getUpdateStatus();
-
     void saveSettings(RssSettings settings);
-
+    void saveTimestamp(long timestamp);
 
     /*TODO PLAN
     transfer object - to view model

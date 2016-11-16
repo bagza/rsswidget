@@ -25,10 +25,12 @@ public class RssApplication extends Application{
     }
 
     private void initializeDependencyInjector() {
-        appComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this))
-                .build();
-        appComponent.inject(this);
+        if (appComponent == null) {
+            appComponent = DaggerAppComponent.builder()
+                    .appModule(new AppModule(this))
+                    .build();
+            appComponent.inject(this);
+        }
     }
 
     //Needed for activities to get the entry point for injection!

@@ -1,5 +1,7 @@
 package com.example.gryazin.rsswidget.domain;
 
+import android.support.annotation.Nullable;
+
 import com.example.gryazin.rsswidget.utils.Utils;
 
 /**
@@ -9,6 +11,7 @@ import com.example.gryazin.rsswidget.utils.Utils;
 public class FeedViewModel {
     private boolean hasNext;
     private boolean hasPrev;
+    @Nullable
     private FeedItem feedItem;
     private UpdateStatus updateStatus;
 
@@ -64,7 +67,6 @@ public class FeedViewModel {
         }
 
         public FeedViewModel build(){
-            Utils.debugAssert(feedItem != null);
             Utils.debugAssert(updateStatus != null);
 
             return new FeedViewModel(this);
