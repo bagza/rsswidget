@@ -26,7 +26,7 @@ public class ReadChannelFeeds implements ReadQuery<SortedSet<? extends FeedItem>
 
     @Override
     public SortedSet<? extends FeedItem> execute(SQLiteDatabase db) {
-        Cursor cursor = db.query(FEEDS_TABLE, null, null, null, null, null, null);
+        Cursor cursor = db.query(FEEDS_TABLE, null, CHANNEL_URL + "=?", Utils.args(channelUrl), null, null, null);
         FeedCursorWrapper feedCursorWrapper = new FeedCursorWrapper(cursor);
         SortedSet<FeedItem> feedSet = new TreeSet<>();
         feedCursorWrapper.peekCollectionAndClose(feedSet);

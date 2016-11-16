@@ -2,19 +2,25 @@ package com.example.gryazin.rsswidget;
 
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,6 +39,7 @@ public class SettingsActivity extends PreferenceActivity {
     UpdateScheduler updateScheduler;
     @Inject
     Repository repository;
+    WhitelistProvider whitelistProvider = new WhitelistProvider();
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -119,6 +126,39 @@ public class SettingsActivity extends PreferenceActivity {
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        whitelistProvider.maybeAskForWhitelist();
+    }
+
+    private class WhitelistProvider{
+        public boolean isWhitelisted(){
+            PowerManager powerManager = getSystemService(PowerManager.class);
+            return powerManager.isIgnoringBatteryOptimizations(getPackageName());
+        }
+
+        public void maybeAskForWhitelist(){
+            if (!isWhitelisted()){
+                showRationaleDialog();
+            }
+        }
+
+        private void showRationaleDialog(){
+            AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
+            builder.setTitle(R.string.whitelist_dialog_title)
+                    .setMessage(R.string.whitelist_rationale)
+                    .setPositiveButton(android.R.string.ok, ((dialog, which) -> {startWhitelistActivity();}))
+                    .show();
+        }
+
+        private void startWhitelistActivity(){
+            Intent i = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                            .setData(Uri.parse("package:" + getPackageName()));
+            startActivity(i);
         }
     }
 

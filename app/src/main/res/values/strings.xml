@@ -3,10 +3,11 @@
 
     <!-- Strings related to Settings -->
     <string name="action_confirm">Done</string>
+    <string name="whitelist_rationale">+Dianne Hackborn says, AlarmManager is not affected by doze in N if whitelisted. Need to prove it!</string>
+    <string name="whitelist_dialog_title">Whitelist app</string>
 
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
-
     <string name="pref_rss_url_name">Rss channel URL</string>
     <string name="pref_rss_url_value">https://stackoverflow.com/jobs/feed</string>
     <string name="pref_file_name">com.example.gryazin.preferences</string>
