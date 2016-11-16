@@ -8,7 +8,8 @@ import java.util.Optional;
  * Created by Zver on 15.11.2016.
  */
 
-public class FeedItem {
+public class FeedItem implements Comparable<FeedItem>{
+    private String guid;
     private Optional<Date> date = Optional.empty();
     private String title;
     private String description;
@@ -18,7 +19,7 @@ public class FeedItem {
         return date.isPresent();
     }
 
-    public Optional<Date> getDate() {
+    public Optional<Date> maybeGetDate() {
         return date;
     }
 
@@ -48,5 +49,31 @@ public class FeedItem {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+
+    @Override
+    public int compareTo(FeedItem o) {
+        if (hasDate() && o.hasDate()){
+            return compareByDates(o);
+        }
+        else{
+            return compareByTitles(o);
+        }
+    }
+
+    private int compareByDates(FeedItem o){
+        return date.get().compareTo(o.maybeGetDate().get());
+    }
+
+    private int compareByTitles(FeedItem o){
+        return title.compareTo(o.getTitle());
     }
 }
