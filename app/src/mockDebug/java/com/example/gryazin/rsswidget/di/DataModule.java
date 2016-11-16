@@ -1,7 +1,10 @@
 package com.example.gryazin.rsswidget.di;
 
 import com.example.gryazin.rsswidget.data.FakeRepository;
+import com.example.gryazin.rsswidget.data.Preferences;
 import com.example.gryazin.rsswidget.data.Repository;
+import com.example.gryazin.rsswidget.data.db.DBHelper;
+import com.example.gryazin.rsswidget.data.db.RssDatabase;
 
 import javax.inject.Singleton;
 
@@ -25,7 +28,7 @@ public class DataModule {
     }*/
 
     @Provides @Singleton
-    Repository provideRepository(){
-        return new FakeRepository();
+    Repository provideRepository(RssDatabase database, Preferences preferences){
+        return new FakeRepository(database, preferences);
     }
 }

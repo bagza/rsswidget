@@ -2,6 +2,7 @@ package com.example.gryazin.rsswidget.data;
 
 import com.example.gryazin.rsswidget.domain.FeedItem;
 import com.example.gryazin.rsswidget.domain.RssSettings;
+import com.example.gryazin.rsswidget.domain.UpdateStatus;
 
 import java.util.Collection;
 import java.util.Map;
@@ -12,9 +13,13 @@ import java.util.SortedSet;
  */
 
 public interface Repository {
-    public SortedSet<? extends FeedItem> getAllFeedsByWidgetId(int widgetId);
-    public Collection<? extends RssSettings> getAllSettings();
-    public Long getUpdateTimestamp();
+    void storeFeeds(Collection<? extends FeedItem> feedItems);
+    SortedSet<? extends FeedItem> getAllFeedsByWidgetId(int widgetId) throws Throwable;
+    Collection<? extends RssSettings> getAllSettings();
+    UpdateStatus getUpdateStatus();
+
+    void saveSettings(RssSettings settings);
+
 
     /*TODO PLAN
     transfer object - to view model
@@ -22,16 +27,16 @@ public interface Repository {
 
             MAKE IT BY STEPS!
     1. Settings Activity refactor.
-        - only one setting
-        - verify setting
+        + only one setting
+        + verify setting
         - SAVE SETTINGS
-        - make results
+        + make results
         - run services
     2.  Make RenderService working on fake REPO
-        - fake Repo by odd id
+        + fake Repo by odd id
         - read settings
         - read from repo
-        - ENABLE dagger
+        + ENABLE dagger
         - render! - CHECK HERE
     3.  Enable ViewState
         - add buttons and rendering

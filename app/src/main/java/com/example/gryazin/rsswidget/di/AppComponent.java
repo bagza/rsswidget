@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.example.gryazin.rsswidget.RssApplication;
+import com.example.gryazin.rsswidget.data.Repository;
 
 import javax.inject.Singleton;
 

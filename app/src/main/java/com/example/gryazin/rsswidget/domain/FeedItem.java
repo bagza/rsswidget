@@ -14,6 +14,7 @@ public class FeedItem implements Comparable<FeedItem>{
     private String title;
     private String description;
     private String url;
+    private Channel channel;
 
     public boolean hasDate(){
         return date.isPresent();
@@ -57,6 +58,18 @@ public class FeedItem implements Comparable<FeedItem>{
 
     public void setGuid(String guid) {
         this.guid = guid;
+    }
+
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public void setChannel(Channel channel) {
+        this.channel = channel;
+    }
+
+    public String getChannelUrl(){
+        return channel.getChannelUrl();
     }
 
     @Override

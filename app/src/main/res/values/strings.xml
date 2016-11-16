@@ -9,6 +9,7 @@
 
     <string name="pref_rss_url_name">Rss channel URL</string>
     <string name="pref_rss_url_value">https://stackoverflow.com/jobs/feed</string>
+    <string name="pref_file_name">com.example.gryazin.preferences</string>
 
    <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>

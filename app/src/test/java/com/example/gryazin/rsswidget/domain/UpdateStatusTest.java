@@ -1,19 +1,15 @@
 package com.example.gryazin.rsswidget.domain;
 
-import android.os.SystemClock;
-
 import com.example.gryazin.rsswidget.domain.UpdateStatus.UpdateStatusVisitor;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.Random;
 
-import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.only;
 
@@ -44,11 +40,11 @@ public class UpdateStatusTest {
 
     @Test
     public void acceptPending() throws Exception {
-        UpdateStatus pending = UpdateStatus.StatusPending.ofLastSyncTimestamp(timestamp);
+        UpdateStatus empty = UpdateStatus.StatusEmpty.ofEmpty();
 
-        pending.accept(statusVisitor);
+        empty.accept(statusVisitor);
 
-        then(statusVisitor).should(only()).onPending(timestamp);
+        then(statusVisitor).should(only()).onEmpty();
         then(statusVisitor).shouldHaveNoMoreInteractions();
     }
 

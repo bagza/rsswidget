@@ -5,13 +5,12 @@ package com.example.gryazin.rsswidget.domain;
  */
 
 public abstract class UpdateStatus {
-
     protected long timestamp;
     protected String message;
 
     interface UpdateStatusVisitor<T>{
         T onSuccess(long timestamp);
-        T onPending(long timestamp);
+        T onEmpty();
         T onError(String message);
     }
 
@@ -33,19 +32,18 @@ public abstract class UpdateStatus {
         }
     }
 
-    public static class StatusPending extends UpdateStatus{
+    public static class StatusEmpty extends UpdateStatus{
 
-        private StatusPending(long timestamp) {
-            this.timestamp = timestamp;
+        private StatusEmpty() {
         }
 
-        public static StatusPending ofLastSyncTimestamp(long timestamp){
-            return new StatusPending(timestamp);
+        public static StatusEmpty ofEmpty(){
+            return new StatusEmpty();
         }
 
         @Override
         public <T> T accept(UpdateStatusVisitor<T> visitor) {
-            return visitor.onPending(timestamp);
+            return visitor.onEmpty();
         }
     }
 

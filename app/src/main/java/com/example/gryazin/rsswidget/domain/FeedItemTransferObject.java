@@ -1,6 +1,6 @@
 package com.example.gryazin.rsswidget.domain;
 
-import com.example.gryazin.rsswidget.Utils;
+import com.example.gryazin.rsswidget.utils.Utils;
 
 /**
  * Created by Zver on 16.11.2016.
