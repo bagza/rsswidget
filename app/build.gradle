@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
         jackOptions {
             enabled true
         }
@@ -18,10 +19,23 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+        debug {
+            debuggable true
+        }
+    }
+
+    productFlavors {
+        mock {
+            applicationIdSuffix = ".mock"
+        }
+        prod {
+
         }
     }
 }
@@ -33,6 +47,12 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
+
+    //Dagger2
+    compile 'com.google.dagger:dagger:2.2'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.2'
+    debugAnnotationProcessor 'com.google.dagger:dagger-compiler:2.2'
+    provided  'javax.annotation:jsr250-api:1.0'
 
     // Dependencies for local unit tests
     testCompile "junit:junit:4.12"
