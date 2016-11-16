@@ -21,8 +21,6 @@ import android.view.MenuItem;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
-import java.util.List;
-
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
  * handset devices, settings are presented as a single list. On tablets,
@@ -102,6 +100,7 @@ public class SettingsActivity extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
+        setDefaultResultIntent();
 
         // Display the fragment as the main content.
         getFragmentManager().beginTransaction().replace(android.R.id.content,
@@ -125,6 +124,32 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     public boolean onIsMultiPane() {
         return isXLargeTablet(this);
+    }
+
+    public int getAppWidgetId(){
+        int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            mAppWidgetId = extras.getInt(
+                    AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID);
+        }
+        return mAppWidgetId;
+    }
+
+    private void setDefaultResultIntent(){
+        Intent intent = new Intent();
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, getAppWidgetId());
+        setResult(RESULT_CANCELED, intent);
+    }
+
+    public void confirmAndRunRss(String url){
+        Intent resultValue = new Intent();
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, getAppWidgetId());
+        setResult(RESULT_OK, resultValue);
+        Toast.makeText(this, "CONFIRM: " + getAppWidgetId() + ", " + url, Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -158,29 +183,17 @@ public class SettingsActivity extends PreferenceActivity {
                     getActivity().finish();
                     return true;
                 case R.id.action_confirm:
-                    saveSettingsAndConfirm();
+                    confirm();
                     return true;
                 default:
                     return super.onOptionsItemSelected(item);
             }
         }
 
-        private void saveSettingsAndConfirm(){
-            int mAppWidgetId;
-            Intent intent = getActivity().getIntent();
-            Bundle extras = intent.getExtras();
-            if (extras != null) {
-                mAppWidgetId = extras.getInt(
-                        AppWidgetManager.EXTRA_APPWIDGET_ID,
-                        AppWidgetManager.INVALID_APPWIDGET_ID);
-
-                String url = ((EditTextPreference)findPreference(RSS_URL_PREF_KEY)).getText();
-                Toast.makeText(getActivity(), "CONFIRM: " + mAppWidgetId + ", " + url, Toast.LENGTH_SHORT).show();
-            }
-            else {
-                Toast.makeText(getActivity(), "ERROR!", Toast.LENGTH_SHORT).show();
-                getActivity().finish();
-            }
+        private void confirm(){
+            SettingsActivity host = (SettingsActivity)getActivity();
+            String url = ((EditTextPreference)findPreference(RSS_URL_PREF_KEY)).getText();
+            host.confirmAndRunRss(url);
         }
 
         private void bindURLPreferenceWithValidator(EditTextPreference preference) {
