@@ -13,7 +13,7 @@ import java.util.TreeSet;
 import static com.example.gryazin.rsswidget.data.db.cursors.FeedCursorWrapper.*;
 
 /**
- * Created by Zver on 16.11.2016.
+ * Created by Dmitry Gryazin on 16.11.2016.
  */
 
 public class ReadChannelFeeds implements ReadQuery<SortedSet<? extends FeedItem>>{

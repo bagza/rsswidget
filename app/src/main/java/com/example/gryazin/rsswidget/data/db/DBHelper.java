@@ -12,7 +12,7 @@ import java.io.InputStream;
 import javax.inject.Inject;
 
 /**
- * Created by Zver on 16.11.2016.
+ * Created by Dmitry Gryazin on 16.11.2016.
  */
 
 public class DBHelper extends SQLiteOpenHelper {

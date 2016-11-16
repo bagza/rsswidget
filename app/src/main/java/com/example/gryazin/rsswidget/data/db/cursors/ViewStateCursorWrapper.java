@@ -6,7 +6,7 @@ import android.database.Cursor;
 import com.example.gryazin.rsswidget.data.ViewState;
 
 /**
- * Created by Zver on 16.11.2016.
+ * Created by Dmitry Gryazin on 16.11.2016.
  */
 
 public class ViewStateCursorWrapper extends TypedCursorWrapper<ViewState> {

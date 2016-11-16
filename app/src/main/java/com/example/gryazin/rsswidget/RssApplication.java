@@ -10,7 +10,7 @@ import com.example.gryazin.rsswidget.di.DaggerAppComponent;
 import javax.inject.Inject;
 
 /**
- * Created by Zver on 16.11.2016.
+ * Created by Dmitry Gryazin on 16.11.2016.
  */
 
 public class RssApplication extends Application{
@@ -39,7 +39,6 @@ public class RssApplication extends Application{
     public static Context getContext() {
         return context;
     }
-
     public static AppComponent getAppComponent(){
         return appComponent;
     }

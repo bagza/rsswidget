@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Optional;
 
 /**
- * Created by Zver on 15.11.2016.
+ * Created by Dmitry Gryazin on 15.11.2016.
  */
 
 public class FeedItem implements Comparable<FeedItem>{

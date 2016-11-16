@@ -14,7 +14,7 @@ import java.util.List;
 import static com.example.gryazin.rsswidget.data.db.cursors.SettingsCursorWrapper.*;
 
 /**
- * Created by Zver on 16.11.2016.
+ * Created by Dmitry Gryazin on 16.11.2016.
  */
 
 public class ReadSettingsQuery implements ReadQuery<Collection<? extends RssSettings>>{

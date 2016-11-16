@@ -7,7 +7,7 @@ import android.database.CursorWrapper;
 import java.util.Collection;
 
 /**
- * Created by Zver on 16.11.2016.
+ * Created by Dmitry Gryazin on 16.11.2016.
  */
 
 public abstract class TypedCursorWrapper<T> extends CursorWrapper {

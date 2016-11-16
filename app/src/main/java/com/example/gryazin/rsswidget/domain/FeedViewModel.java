@@ -3,10 +3,10 @@ package com.example.gryazin.rsswidget.domain;
 import com.example.gryazin.rsswidget.utils.Utils;
 
 /**
- * Created by Zver on 16.11.2016.
+ * Created by Dmitry Gryazin on 16.11.2016.
  */
 
-public class FeedItemTransferObject {
+public class FeedViewModel {
     private boolean hasNext;
     private boolean hasPrev;
     private FeedItem feedItem;
@@ -28,7 +28,7 @@ public class FeedItemTransferObject {
         return updateStatus;
     }
 
-    private FeedItemTransferObject(Builder builder){
+    private FeedViewModel(Builder builder){
         this.feedItem = builder.feedItem;
         this.hasNext = builder.hasNext;
         this.hasPrev = builder.hasPrev;
@@ -63,11 +63,11 @@ public class FeedItemTransferObject {
             return this;
         }
 
-        public FeedItemTransferObject build(){
+        public FeedViewModel build(){
             Utils.debugAssert(feedItem != null);
             Utils.debugAssert(updateStatus != null);
 
-            return new FeedItemTransferObject(this);
+            return new FeedViewModel(this);
         }
     }
 }

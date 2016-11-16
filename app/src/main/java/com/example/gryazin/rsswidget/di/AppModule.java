@@ -1,6 +1,7 @@
 package com.example.gryazin.rsswidget.di;
 
 import android.app.Application;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 
 import javax.inject.Singleton;
@@ -9,13 +10,12 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Created by Zver on 16.11.2016.
+ * Created by Dmitry Gryazin on 16.11.2016.
  */
 
 @Module(includes = {
         //ApiModule.class,
-        DataModule.class,
-        //UseCaseModule.class,
+        DataModule.class
 })
 public final class AppModule {
     private final Application app;
@@ -31,5 +31,10 @@ public final class AppModule {
     @Provides @Singleton
     Context provideContext() {
         return app;
+    }
+
+    @Provides
+    AppWidgetManager provideAppWidgetManager(Context context){
+        return AppWidgetManager.getInstance(context);
     }
 }

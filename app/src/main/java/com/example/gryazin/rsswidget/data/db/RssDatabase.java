@@ -19,7 +19,7 @@ import java.util.SortedSet;
 import javax.inject.Inject;
 
 /**
- * Created by Zver on 16.11.2016.
+ * Created by Dmitry Gryazin on 16.11.2016.
  */
 
 public class RssDatabase {

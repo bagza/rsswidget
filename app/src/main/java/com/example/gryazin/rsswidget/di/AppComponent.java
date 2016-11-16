@@ -5,13 +5,14 @@ import android.content.Context;
 
 import com.example.gryazin.rsswidget.RssApplication;
 import com.example.gryazin.rsswidget.data.Repository;
+import com.example.gryazin.rsswidget.data.services.WidgetsRefreshService;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
 /**
- * Created by Zver on 16.11.2016.
+ * Created by Dmitry Gryazin on 16.11.2016.
  */
 @Singleton
 @Component(modules = {
@@ -24,4 +25,6 @@ public interface AppComponent {
     Context getContext();
 
     Repository provideRepository();
+
+    void inject(WidgetsRefreshService service);
 }

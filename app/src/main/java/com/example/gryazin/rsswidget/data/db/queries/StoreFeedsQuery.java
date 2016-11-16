@@ -10,7 +10,7 @@ import java.util.Collection;
 import static com.example.gryazin.rsswidget.data.db.cursors.FeedCursorWrapper.FEEDS_TABLE;
 
 /**
- * Created by Zver on 16.11.2016.
+ * Created by Dmitry Gryazin on 16.11.2016.
  */
 
 public class StoreFeedsQuery implements WriteQuery {

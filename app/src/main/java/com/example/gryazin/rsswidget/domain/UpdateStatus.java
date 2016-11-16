@@ -1,14 +1,14 @@
 package com.example.gryazin.rsswidget.domain;
 
 /**
- * Created by Zver on 16.11.2016.
+ * Created by Dmitry Gryazin on 16.11.2016.
  */
 
 public abstract class UpdateStatus {
     protected long timestamp;
     protected String message;
 
-    interface UpdateStatusVisitor<T>{
+    public interface UpdateStatusVisitor<T>{
         T onSuccess(long timestamp);
         T onEmpty();
         T onError(String message);
