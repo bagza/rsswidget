@@ -9,9 +9,8 @@ import android.widget.RemoteViews;
 import com.example.gryazin.rsswidget.R;
 import com.example.gryazin.rsswidget.RssApplication;
 import com.example.gryazin.rsswidget.data.Repository;
-import com.example.gryazin.rsswidget.data.ViewState;
 import com.example.gryazin.rsswidget.domain.FeedItem;
-import com.example.gryazin.rsswidget.domain.FeedViewModel;
+import com.example.gryazin.rsswidget.ui.FeedViewModel;
 import com.example.gryazin.rsswidget.domain.UpdateStatus;
 
 import java.util.Date;
@@ -30,6 +29,8 @@ import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
 public class WidgetsRefreshService extends IntentService {
 
     public static final String ACTION_REGULAR_REFRESH = "refresh";
+    public static final String ACTION_SHOW_NEXT = "show_next";
+    public static final String ACTION_SHOW_PREV = "show_prev";
 
     @Inject
     AppWidgetManager appWidgetManager;
@@ -73,35 +74,5 @@ public class WidgetsRefreshService extends IntentService {
                     .withStatus(UpdateStatus.StatusError.ofErrorMessage(throwable.getLocalizedMessage()))
                     .build();
         }
-    }
-
-    private RemoteViews renderViewModel(FeedViewModel viewModel){
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.single_item_rss_widget);
-        viewModel.getUpdateStatus().accept(new UpdateStatus.UpdateStatusVisitor<Void>() {
-            @Override
-            public Void onSuccess(long timestamp) {
-                renderViewsWithFeed(remoteViews, viewModel.getFeedItem(), timestamp);
-                return null;
-            }
-
-            @Override
-            public Void onEmpty() {
-                remoteViews.setTextViewText(R.id.textTitle, "EMPTY");
-                return null;
-            }
-
-            @Override
-            public Void onError(String message) {
-                remoteViews.setTextViewText(R.id.textTitle, "ERROR");
-                return null;
-            }
-        });
-        return remoteViews;
-    }
-
-    private void renderViewsWithFeed(RemoteViews remoteViews, FeedItem feedItem, long timestamp){
-        remoteViews.setTextViewText(R.id.textTitle, feedItem.getTitle());
-        remoteViews.setTextViewText(R.id.textSubtitle, new Date(timestamp).toString());
-        remoteViews.setTextViewText(R.id.textBody, feedItem.getDescription());
     }
 }

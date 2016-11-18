@@ -20,10 +20,10 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="14dp"
-            android:layout_toLeftOf="@+id/settingsButton">
+            android:layout_toLeftOf="@+id/settings_button">
 
             <TextView
-                android:id="@+id/textTitle"
+                android:id="@+id/text_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextTitle"
@@ -32,7 +32,7 @@
                 android:ellipsize="end"/>
 
             <TextView
-                android:id="@+id/textSubtitle"
+                android:id="@+id/text_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextSubtitle"
@@ -44,10 +44,11 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/settingsButton"
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/settings_button"
+            android:layout_width="@dimen/widget_title_bar_height"
+            android:layout_height="match_parent"
             android:src="@drawable/ic_settings_white_36dp"
+            android:scaleType="center"
             android:background="@android:color/transparent"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="4dp"
@@ -57,7 +58,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/textBody"
+        android:id="@+id/text_body"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,6 +72,26 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/widget_bottom_bar_height"
         android:background="@color/colorPrimaryDark">
+
+        <ImageButton
+            android:id="@+id/button_left"
+            android:layout_width="@dimen/widget_bottom_bar_height"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_keyboard_arrow_left_white_36dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:scaleType="center"
+            android:layout_marginStart="4dp"/>
+
+        <ImageButton
+            android:id="@+id/button_right"
+            android:layout_width="@dimen/widget_bottom_bar_height"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_keyboard_arrow_right_white_36dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:scaleType="center"
+            android:layout_marginEnd="4dp"/>
 
     </RelativeLayout>
 

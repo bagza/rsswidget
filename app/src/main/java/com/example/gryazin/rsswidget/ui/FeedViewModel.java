@@ -1,7 +1,9 @@
-package com.example.gryazin.rsswidget.domain;
+package com.example.gryazin.rsswidget.ui;
 
 import android.support.annotation.Nullable;
 
+import com.example.gryazin.rsswidget.domain.FeedItem;
+import com.example.gryazin.rsswidget.domain.UpdateStatus;
 import com.example.gryazin.rsswidget.utils.Utils;
 
 /**

@@ -14,7 +14,7 @@ import java.util.SortedSet;
 
 public interface Repository {
     void storeFeeds(Collection<? extends FeedItem> feedItems);
-    SortedSet<? extends FeedItem> getAllFeedsByWidgetId(int widgetId) throws Throwable;
+    SortedSet<? extends FeedItem> getAllFeedsByWidgetId(int widgetId);
     Collection<? extends RssSettings> getAllSettings();
     UpdateStatus getUpdateStatus();
     void saveSettings(RssSettings settings);
@@ -28,7 +28,7 @@ public interface Repository {
     1. Settings Activity refactor.
         + only one setting
         + verify setting
-        - SAVE SETTINGS
+        + SAVE SETTINGS
         + make results
         - run services
     2.  Make RenderService working on fake REPO
@@ -36,12 +36,18 @@ public interface Repository {
         - read settings
         - read from repo
         + ENABLE dagger
-        - render! - CHECK HERE
+        + render! - CHECK HERE
     3.  Enable ViewState
         - add buttons and rendering
         - save view state
         - read view state on buttons click
         - re-render on button clicks - CHECK HERE
+
+        3.1
+        - remove old settings
+        - clear on disable
+
+
     4.  Make Alarms
         -make alarms for rendering - see timestamp update.
     5.  Make NetworkService.

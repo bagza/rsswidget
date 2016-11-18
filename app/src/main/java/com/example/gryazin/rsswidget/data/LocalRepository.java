@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 /**
  * Created by Dmitry Gryazin on 16.11.2016.
+ * WISDOM: all calls are synchronous, because all job is done in background by services.
  */
 
 public class LocalRepository implements Repository {
@@ -31,7 +32,7 @@ public class LocalRepository implements Repository {
     }
 
     @Override
-    public SortedSet<? extends FeedItem> getAllFeedsByWidgetId(int widgetId) throws Throwable {
+    public SortedSet<? extends FeedItem> getAllFeedsByWidgetId(int widgetId){
         String channelUrl = getChannelUrlForWidget(widgetId);
         return database.readFeedItemsByChannel(channelUrl);
     }
@@ -58,12 +59,16 @@ public class LocalRepository implements Repository {
         database.storeSettings(settings);
     }
 
-    private String getChannelUrlForWidget(int widgetId) throws Throwable {
+    private String getChannelUrlForWidget(int widgetId){
         RssSettings mSetting = getAllSettings().stream()
                 .filter(setting -> setting.getAppWidgetId() == widgetId)
                 .findAny()
-                //.orElse(null);
-                .orElseThrow(() -> new IllegalArgumentException("No such widgetid in settings"));
+                .orElse(null);
+                //Guess it's JDK bug! It says throwable not handled, while it's RuntimeException!!
+                //.orElseThrow(() -> new IllegalArgumentException("No such widgetid in settings"));
+        if (mSetting == null){
+            throw new IllegalArgumentException("No such widgetid in settings");
+        }
         return mSetting.getRssUrl();
     }
 
