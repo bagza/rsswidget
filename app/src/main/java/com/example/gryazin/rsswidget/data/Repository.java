@@ -15,9 +15,11 @@ import java.util.SortedSet;
 public interface Repository {
     void storeFeeds(Collection<? extends FeedItem> feedItems);
     SortedSet<? extends FeedItem> getAllFeedsByWidgetId(int widgetId);
-    Collection<? extends RssSettings> getAllSettings();
     UpdateStatus getUpdateStatus();
+    Collection<? extends RssSettings> getAllSettings();
     void saveSettings(RssSettings settings);
+    WidgetState getWidgetStateById(int widgetId);
+    void saveWidgetState(WidgetState widgetState);
     void saveTimestamp(long timestamp);
 
     /*TODO PLAN

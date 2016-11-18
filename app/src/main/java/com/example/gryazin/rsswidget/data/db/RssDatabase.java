@@ -3,11 +3,14 @@ package com.example.gryazin.rsswidget.data.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.gryazin.rsswidget.data.WidgetState;
 import com.example.gryazin.rsswidget.data.db.queries.ReadChannelFeeds;
 import com.example.gryazin.rsswidget.data.db.queries.ReadQuery;
 import com.example.gryazin.rsswidget.data.db.queries.ReadSettingsQuery;
+import com.example.gryazin.rsswidget.data.db.queries.ReadWidgetStateQuery;
 import com.example.gryazin.rsswidget.data.db.queries.StoreFeedsQuery;
 import com.example.gryazin.rsswidget.data.db.queries.StoreSettingsQuery;
+import com.example.gryazin.rsswidget.data.db.queries.StoreWidgetStateQuery;
 import com.example.gryazin.rsswidget.data.db.queries.WriteQuery;
 import com.example.gryazin.rsswidget.domain.FeedItem;
 import com.example.gryazin.rsswidget.domain.RssSettings;
@@ -75,5 +78,13 @@ public class RssDatabase {
 
     public Collection<? extends RssSettings> getAllSettings(){
         return readDatabase(new ReadSettingsQuery());
+    }
+
+    public void storeWidgetState(WidgetState widgetState){
+        writeDatabase(new StoreWidgetStateQuery(widgetState));
+    }
+
+    public WidgetState getWidgetStateById(int widgetId){
+        return readDatabase(new ReadWidgetStateQuery(widgetId));
     }
 }

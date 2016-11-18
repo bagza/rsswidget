@@ -14,11 +14,11 @@ import static com.example.gryazin.rsswidget.data.db.cursors.WidgetStateCursorWra
  * Created by Dmitry Gryazin on 18.11.2016.
  */
 
-public class ReadWidgetState implements ReadQuery<WidgetState> {
+public class ReadWidgetStateQuery implements ReadQuery<WidgetState> {
 
     private int widgetId;
 
-    public ReadWidgetState(int widgetId) {
+    public ReadWidgetStateQuery(int widgetId) {
         this.widgetId = widgetId;
     }
 

@@ -73,6 +73,16 @@ public class LocalRepository implements Repository {
     }
 
     @Override
+    public WidgetState getWidgetStateById(int widgetId) {
+        return database.getWidgetStateById(widgetId);
+    }
+
+    @Override
+    public void saveWidgetState(WidgetState widgetState) {
+        database.storeWidgetState(widgetState);
+    }
+
+    @Override
     public void saveTimestamp(long timestamp) {
         preferences.storeUpdateTimestamp(timestamp);
     }
