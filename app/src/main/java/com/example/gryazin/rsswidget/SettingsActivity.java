@@ -5,10 +5,10 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -20,7 +20,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Patterns;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +29,7 @@ import android.widget.Toast;
 import com.example.gryazin.rsswidget.data.Repository;
 import com.example.gryazin.rsswidget.data.services.UpdateScheduler;
 import com.example.gryazin.rsswidget.domain.RssSettings;
+import com.example.gryazin.rsswidget.utils.Utils;
 
 import javax.inject.Inject;
 
@@ -190,15 +190,21 @@ public class SettingsActivity extends PreferenceActivity {
 
     public void confirmAndRunRss(String url){
         Toast.makeText(this, "CONFIRM: " + getAppWidgetId() + ", " + url, Toast.LENGTH_SHORT).show();
-        saveSettings(url, getAppWidgetId());
+        saveSettingsAsync(url, getAppWidgetId());
         runService();
         finishOk();
     }
 
-    private void saveSettings(String url, int appWidgetId){
+    //Need async, because it might block if the db is locked.
+    private void saveSettingsAsync(String url, int appWidgetId){
         RssSettings settings = new RssSettings(appWidgetId, url);
-        //FIXME too lazy to background it, though it MIGHT lock if db is locked
-        repository.saveSettings(settings);
+        new AsyncTask<Void, Void, Void>(){
+            @Override
+            protected Void doInBackground(Void... voids) {
+                repository.saveSettings(settings);
+                return null;
+            }
+        }.execute();
     }
 
     private void runService(){
@@ -221,11 +227,6 @@ public class SettingsActivity extends PreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
-
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
             bindURLPreferenceWithValidator((EditTextPreference) findPreference(RSS_URL_PREF_KEY));
         }
 
