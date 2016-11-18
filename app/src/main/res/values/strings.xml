@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">RssWidget</string>
 
+    <!-- Feed strings -->
+    <string name="feed_empty_title">Empty</string>
+    <string name="feed_error_title">Error</string>
+
     <!-- Strings related to Settings -->
     <string name="action_confirm">Done</string>
     <string name="whitelist_rationale">+Dianne Hackborn says, AlarmManager is not affected by doze in N if whitelisted. Need to prove it!</string>

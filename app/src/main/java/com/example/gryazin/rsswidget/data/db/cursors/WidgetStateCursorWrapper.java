@@ -22,12 +22,18 @@ public class WidgetStateCursorWrapper extends TypedCursorWrapper<WidgetState> {
 
     @Override
     public WidgetState peek() {
-        if (getCount() < 1 || getString(STATE_LAST_GUID, "").isEmpty()){
+        if (getCount() < 1){
             return new WidgetState.StateEmpty();
         }
+        moveToFirst();
+        if (getString(STATE_LAST_GUID, "").isEmpty()){
+            return new WidgetState.StateEmpty();
+        }
+
         int pos = getInteger(STATE_LAST_POSITION, 0);
+        int id = getInteger(STATE_WIDGET_ID, 0);
         String guid = getString(STATE_LAST_GUID, "");
-        WidgetState widgetState = new WidgetState.StateLastWatched(pos, guid);
+        WidgetState widgetState = new WidgetState.StateLastWatched(id, pos, guid);
         widgetState.setAppWidgetId(getInteger(STATE_WIDGET_ID, 0));
         return widgetState;
     }

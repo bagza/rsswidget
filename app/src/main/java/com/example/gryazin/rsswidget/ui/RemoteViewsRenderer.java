@@ -1,9 +1,14 @@
 package com.example.gryazin.rsswidget.ui;
 
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.Intent;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.example.gryazin.rsswidget.R;
+import com.example.gryazin.rsswidget.data.services.WidgetsRefreshService;
 import com.example.gryazin.rsswidget.domain.FeedItem;
 import com.example.gryazin.rsswidget.domain.UpdateStatus;
 
@@ -23,37 +28,51 @@ public class RemoteViewsRenderer {
         this.context = context;
     }
 
-    public RemoteViews getRenderedViews(FeedViewModel viewModel){
+    public RemoteViews getRenderedViews(int appWidgetId, FeedViewModel viewModel){
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.single_item_rss_widget);
-        renderViewsByUpdateStatus(remoteViews, viewModel);
+        renderViewsWithViewModel(remoteViews, viewModel);
+        renderButtons(remoteViews, appWidgetId, viewModel);
         return remoteViews;
     }
 
-    private void renderViewsByUpdateStatus(RemoteViews remoteViews, FeedViewModel viewModel){
-        viewModel.getUpdateStatus().accept(new UpdateStatus.UpdateStatusVisitor<Void>() {
-            @Override
-            public Void onSuccess(long timestamp) {
-                renderViewsWithFeed(remoteViews, viewModel.getFeedItem(), timestamp);
-                return null;
-            }
-
-            @Override
-            public Void onEmpty() {
-                remoteViews.setTextViewText(R.id.text_title, "EMPTY");
-                return null;
-            }
-
-            @Override
-            public Void onError(String message) {
-                remoteViews.setTextViewText(R.id.text_title, "ERROR");
-                return null;
-            }
-        });
+    private void renderViewsWithViewModel(RemoteViews remoteViews, FeedViewModel viewModel){
+        String timeUpdateString;
+        if (viewModel.maybeGetTimestamp().isPresent()){
+            timeUpdateString = new Date(viewModel.maybeGetTimestamp().get()).toString();
+        }
+        else {
+            timeUpdateString = "...";
+        }
+        remoteViews.setTextViewText(R.id.text_title, viewModel.getTitle());
+        remoteViews.setTextViewText(R.id.text_subtitle, timeUpdateString);
+        remoteViews.setTextViewText(R.id.text_body, viewModel.getBody());
     }
 
-    private void renderViewsWithFeed(RemoteViews remoteViews, FeedItem feedItem, long timestamp){
-        remoteViews.setTextViewText(R.id.text_title, feedItem.getTitle());
-        remoteViews.setTextViewText(R.id.text_subtitle, new Date(timestamp).toString());
-        remoteViews.setTextViewText(R.id.text_body, feedItem.getDescription());
+    //TODO refactor duplicate code
+    //Wisdom Use widgetId as request code, so intent are different from different widgets, overwritten otherwise.
+    private void renderButtons(RemoteViews remoteViews, int appWidgetId, FeedViewModel viewModel){
+        if (viewModel.hasNext()){
+            Intent intent=new Intent(context, WidgetsRefreshService.class);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            intent.setAction(WidgetsRefreshService.ACTION_SHOW_NEXT);
+            PendingIntent pi = PendingIntent.getService(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            remoteViews.setOnClickPendingIntent(R.id.button_right, pi);
+            remoteViews.setViewVisibility(R.id.button_right, View.VISIBLE);
+        }
+        else {
+            remoteViews.setViewVisibility(R.id.button_right, View.GONE);
+        }
+
+        if (viewModel.hasPrev()){
+            Intent intent=new Intent(context, WidgetsRefreshService.class);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            intent.setAction(WidgetsRefreshService.ACTION_SHOW_PREV);
+            PendingIntent pi = PendingIntent.getService(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            remoteViews.setOnClickPendingIntent(R.id.button_left, pi);
+            remoteViews.setViewVisibility(R.id.button_left, View.VISIBLE);
+        }
+        else {
+            remoteViews.setViewVisibility(R.id.button_left, View.GONE);
+        }
     }
 }

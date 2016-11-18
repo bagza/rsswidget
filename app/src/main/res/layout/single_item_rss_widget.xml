@@ -44,14 +44,13 @@
         </LinearLayout>
 
         <ImageButton
+            style="@style/ImgButtons"
             android:id="@+id/settings_button"
             android:layout_width="@dimen/widget_title_bar_height"
             android:layout_height="match_parent"
             android:src="@drawable/ic_settings_white_36dp"
             android:scaleType="center"
-            android:background="@android:color/transparent"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="4dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true" />
 
@@ -74,24 +73,24 @@
         android:background="@color/colorPrimaryDark">
 
         <ImageButton
+            style="@style/ImgButtons"
             android:id="@+id/button_left"
             android:layout_width="@dimen/widget_bottom_bar_height"
             android:layout_height="match_parent"
             android:src="@drawable/ic_keyboard_arrow_left_white_36dp"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:scaleType="center"
-            android:layout_marginStart="4dp"/>
+            android:scaleType="center"/>
 
         <ImageButton
+            style="@style/ImgButtons"
             android:id="@+id/button_right"
             android:layout_width="@dimen/widget_bottom_bar_height"
             android:layout_height="match_parent"
             android:src="@drawable/ic_keyboard_arrow_right_white_36dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:scaleType="center"
-            android:layout_marginEnd="4dp"/>
+            android:scaleType="center"/>
 
     </RelativeLayout>
 

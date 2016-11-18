@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="200dp"
-    android:minHeight="250dp"
+    android:minWidth="250dp"
+    android:minHeight="140dp"
     android:updatePeriodMillis="0"
     android:initialLayout="@layout/single_item_rss_widget"
     android:previewImage="@drawable/ic_notifications_black_24dp"

@@ -16,7 +16,7 @@ import static com.example.gryazin.rsswidget.data.db.cursors.FeedCursorWrapper.*;
  * Created by Dmitry Gryazin on 16.11.2016.
  */
 
-public class ReadChannelFeeds implements ReadQuery<SortedSet<? extends FeedItem>>{
+public class ReadChannelFeeds implements ReadQuery<TreeSet<? extends FeedItem>>{
 
     private String channelUrl;
 
@@ -25,10 +25,10 @@ public class ReadChannelFeeds implements ReadQuery<SortedSet<? extends FeedItem>
     }
 
     @Override
-    public SortedSet<? extends FeedItem> execute(SQLiteDatabase db) {
+    public TreeSet<? extends FeedItem> execute(SQLiteDatabase db) {
         Cursor cursor = db.query(FEEDS_TABLE, null, CHANNEL_URL + "=?", Utils.args(channelUrl), null, null, null);
         FeedCursorWrapper feedCursorWrapper = new FeedCursorWrapper(cursor);
-        SortedSet<FeedItem> feedSet = new TreeSet<>();
+        TreeSet<FeedItem> feedSet = new TreeSet<>();
         feedCursorWrapper.peekCollectionAndClose(feedSet);
         return feedSet;
     }

@@ -19,11 +19,15 @@ public abstract class TypedCursorWrapper<T> extends CursorWrapper {
     public abstract T peek();
 
     public void peekCollectionAndClose(Collection<? super T> collection){
-        moveToFirst();
-        while(moveToNext()) {
-            collection.add(peek());
+        try {
+            moveToFirst();
+            while (moveToNext()) {
+                collection.add(peek());
+            }
         }
-        close();
+        finally {
+            close();
+        }
     };
 
     public boolean isEmpty() {

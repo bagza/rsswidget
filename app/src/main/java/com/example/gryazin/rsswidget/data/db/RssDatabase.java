@@ -18,6 +18,7 @@ import com.example.gryazin.rsswidget.domain.RssSettings;
 import java.util.Collection;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 
@@ -68,7 +69,7 @@ public class RssDatabase {
         writeDatabase(new StoreFeedsQuery(feedItems));
     }
 
-    public SortedSet<? extends FeedItem> readFeedItemsByChannel(String channelUrl){
+    public TreeSet<? extends FeedItem> readFeedItemsByChannel(String channelUrl){
         return readDatabase(new ReadChannelFeeds(channelUrl));
     }
 

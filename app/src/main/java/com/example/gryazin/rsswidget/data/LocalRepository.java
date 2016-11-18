@@ -6,7 +6,7 @@ import com.example.gryazin.rsswidget.domain.RssSettings;
 import com.example.gryazin.rsswidget.domain.UpdateStatus;
 
 import java.util.Collection;
-import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 
@@ -32,7 +32,7 @@ public class LocalRepository implements Repository {
     }
 
     @Override
-    public SortedSet<? extends FeedItem> getAllFeedsByWidgetId(int widgetId){
+    public TreeSet<? extends FeedItem> getAllFeedsByWidgetId(int widgetId){
         String channelUrl = getChannelUrlForWidget(widgetId);
         return database.readFeedItemsByChannel(channelUrl);
     }
@@ -65,9 +65,10 @@ public class LocalRepository implements Repository {
                 .findAny()
                 .orElse(null);
                 //Guess it's JDK bug! It says throwable not handled, while it's RuntimeException!!
+                //There is a similar issue in oracle tracker already.
                 //.orElseThrow(() -> new IllegalArgumentException("No such widgetid in settings"));
         if (mSetting == null){
-            throw new IllegalArgumentException("No such widgetid in settings");
+            throw new IllegalStateException("No such widgetid in settings");
         }
         return mSetting.getRssUrl();
     }

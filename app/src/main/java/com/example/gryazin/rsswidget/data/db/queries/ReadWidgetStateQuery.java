@@ -25,8 +25,6 @@ public class ReadWidgetStateQuery implements ReadQuery<WidgetState> {
     @Override
     public WidgetState execute(SQLiteDatabase db) {
         Cursor cursor = db.query(VIEW_STATES_TABLE, null, STATE_WIDGET_ID + "=?", Utils.args(widgetId), null, null, null);
-        Utils.debugAssert(cursor.getCount() < 1);
-        cursor.moveToFirst();
         WidgetState widgetState = new WidgetStateCursorWrapper(cursor).peek();
         cursor.close();
         return widgetState;

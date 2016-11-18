@@ -6,6 +6,8 @@ import com.example.gryazin.rsswidget.domain.FeedItem;
 import com.example.gryazin.rsswidget.domain.UpdateStatus;
 import com.example.gryazin.rsswidget.utils.Utils;
 
+import java.util.Optional;
+
 /**
  * Created by Dmitry Gryazin on 16.11.2016.
  */
@@ -13,9 +15,9 @@ import com.example.gryazin.rsswidget.utils.Utils;
 public class FeedViewModel {
     private boolean hasNext;
     private boolean hasPrev;
-    @Nullable
-    private FeedItem feedItem;
-    private UpdateStatus updateStatus;
+    private Optional<Long> updateTimestamp;
+    private String title;
+    private String body;
 
     public boolean hasNext() {
         return hasNext;
@@ -25,51 +27,71 @@ public class FeedViewModel {
         return hasPrev;
     }
 
-    public FeedItem getFeedItem() {
-        return feedItem;
+    public Optional<Long> maybeGetTimestamp() {
+        return updateTimestamp;
     }
 
-    public UpdateStatus getUpdateStatus() {
-        return updateStatus;
+    public String getTitle() {
+        return title;
+    }
+
+    public String getBody() {
+        return body;
     }
 
     private FeedViewModel(Builder builder){
-        this.feedItem = builder.feedItem;
+        this.body = builder.body;
+        this.title = builder.title;
         this.hasNext = builder.hasNext;
         this.hasPrev = builder.hasPrev;
-        this.updateStatus = builder.updateStatus;
+        this.updateTimestamp = Optional.ofNullable(builder.timestamp);
     }
 
     public static class Builder{
         //mandatory
-        private FeedItem feedItem;
-        private UpdateStatus updateStatus;
+        private String title;
+        private String body;
         //optional
         private boolean hasNext = false;
         private boolean hasPrev = false;
+        private Long timestamp = null;
 
-        public Builder hasPrev(boolean prev){
+        public static Builder builder(){
+            return new Builder();
+        }
+
+        public Builder byFeedItem(FeedItem feedItem){
+            return this.withTitle(feedItem.getTitle())
+                       .withBody(feedItem.getDescription());
+        }
+
+        public Builder withPrev(boolean prev){
             this.hasPrev = prev;
             return this;
         }
 
-        public Builder hasNext(boolean next){
+        public Builder withNext(boolean next){
             this.hasNext = next;
             return this;
         }
 
-        public Builder withFeed(FeedItem feedItem){
-            this.feedItem = feedItem;
+        public Builder withTitle(String title){
+            this.title = title;
             return this;
         }
 
-        public Builder withStatus(UpdateStatus updateStatus){
-            this.updateStatus = updateStatus;
+        public Builder withBody(String body){
+            this.body = body;
+            return this;
+        }
+
+        public Builder withTimestamp(long timestamp){
+            this.timestamp = timestamp;
             return this;
         }
 
         public FeedViewModel build(){
-            Utils.debugAssert(updateStatus != null);
+            Utils.debugAssert(title != null && body != null);
 
             return new FeedViewModel(this);
         }

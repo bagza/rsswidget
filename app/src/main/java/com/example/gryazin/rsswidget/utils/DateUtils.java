@@ -1,6 +1,5 @@
 package com.example.gryazin.rsswidget.utils;
 
-import android.support.annotation.Nullable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

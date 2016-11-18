@@ -12,6 +12,7 @@ import com.example.gryazin.rsswidget.data.Repository;
 import com.example.gryazin.rsswidget.domain.FeedItem;
 import com.example.gryazin.rsswidget.ui.FeedViewModel;
 import com.example.gryazin.rsswidget.domain.UpdateStatus;
+import com.example.gryazin.rsswidget.ui.WidgetPresenter;
 
 import java.util.Date;
 import java.util.SortedSet;
@@ -36,6 +37,8 @@ public class WidgetsRefreshService extends IntentService {
     AppWidgetManager appWidgetManager;
     @Inject
     Repository repository;
+    @Inject
+    WidgetPresenter presenter;
 
     public WidgetsRefreshService() {
         super("WidgetsRefreshService");
@@ -44,35 +47,31 @@ public class WidgetsRefreshService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        int appWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
-        if (appWidgetId != INVALID_APPWIDGET_ID) {
-            updateAppWidget(appWidgetId, intent);
+        try {
+            int appWidgetId = intent.getIntExtra(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
+            if (appWidgetId != INVALID_APPWIDGET_ID) {
+                updateAppWidget(appWidgetId, intent);
+            }
+        }
+        catch (IllegalStateException e){
+            //means there was illegal update call to receiver while the settings were not set yet.
+            //See Receiver comments also
+            Log.d("ILLEGAL UPDATE", e.getLocalizedMessage());
         }
     }
 
     private void updateAppWidget(int appWidgetId, Intent intent){
-        FeedViewModel feedViewModel = bakeViewModelForAppWidget(appWidgetId);
-        RemoteViews remoteViews = renderViewModel(feedViewModel);
+        RemoteViews remoteViews;
+        switch (intent.getAction()){
+            case ACTION_SHOW_NEXT:
+                remoteViews = presenter.onNext(appWidgetId);
+                break;
+            case ACTION_SHOW_PREV:
+                remoteViews = presenter.onPrev(appWidgetId);
+                break;
+            default:
+                remoteViews = presenter.onRefresh(appWidgetId);
+        }
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-    }
-
-    private FeedViewModel bakeViewModelForAppWidget(int appWidgetId){
-        FeedViewModel.Builder feedViewModelBuilder = new FeedViewModel.Builder();
-        try {
-            UpdateStatus updateStatus = repository.getUpdateStatus();
-            SortedSet<? extends FeedItem> feedSet = repository.getAllFeedsByWidgetId(appWidgetId);
-            feedViewModelBuilder.withStatus(updateStatus);
-            if (feedSet.size() > 0) {
-                feedViewModelBuilder.withFeed(feedSet.first());
-            }
-            return feedViewModelBuilder.build();
-        }
-        catch (Throwable throwable){
-            Log.d("Error", throwable.getLocalizedMessage());
-            return feedViewModelBuilder
-                    .withFeed(null)
-                    .withStatus(UpdateStatus.StatusError.ofErrorMessage(throwable.getLocalizedMessage()))
-                    .build();
-        }
     }
 }

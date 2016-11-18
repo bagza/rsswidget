@@ -37,26 +37,27 @@ public abstract class WidgetState {
 
     public interface Visitor<T>{
         T onLastWatched(int lastWatchedPosition, String lastWatchedFeedGuid);
-        T onEmpty();
+        T onEmptyWatchedState();
     }
 
     public static class StateEmpty extends WidgetState{
         @Override
         public <T> T accept(Visitor<T> visitor) {
-            return visitor.onEmpty();
+            return visitor.onEmptyWatchedState();
         }
     }
 
     public static class StateLastWatched extends WidgetState{
 
-        public StateLastWatched(int lastWatchedPosition, String lastWatchedFeedGuid) {
+        public StateLastWatched(int widgetId, int lastWatchedPosition, String lastWatchedFeedGuid) {
+            setAppWidgetId(widgetId);
             setLastWatchedFeedGuid(lastWatchedFeedGuid);
             setLastWatchedPosition(lastWatchedPosition);
         }
 
         @Override
         public <T> T accept(Visitor<T> visitor) {
-            return visitor.onEmpty();
+            return visitor.onLastWatched(getLastWatchedPosition(), getLastWatchedFeedGuid());
         }
     }
 
