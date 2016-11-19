@@ -121,13 +121,13 @@ public class WidgetPresenter {
                 }
                 else if (positionOffset == 0){
                     return feedItems.stream()
-                            .filter((feed) -> feed.getGuid() == lastWatchedFeedGuid)
+                            .filter((feed) -> feed.getGuid().equals(lastWatchedFeedGuid))
                             .findFirst()
                             .orElse(null);
                 }
                 else if (positionOffset != 0){
                     int lastPosition = getItemPosOrGetLastPos(feedItems, lastWatchedFeedGuid);
-                    int newPosition = lastWatchedPosition + positionOffset;
+                    int newPosition = lastPosition + positionOffset;
                     Utils.debugAssert(newPosition >= 0 || newPosition < feedItems.size());
                     //trick to get Kth element with streams
                     return feedItems.stream()
@@ -149,7 +149,7 @@ public class WidgetPresenter {
         Iterator<? extends FeedItem> iterator = feedItems.iterator();
         int i = 0;
         while (iterator.hasNext()){
-            if (iterator.next().getGuid() == lastWatchedFeedGuid){
+            if (iterator.next().getGuid().equals(lastWatchedFeedGuid)){
                 return i;
             }
             i++;

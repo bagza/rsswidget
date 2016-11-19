@@ -25,7 +25,7 @@ public class UpdateScheduler {
     public UpdateScheduler(Context context) {
         this.context = context;
 
-        /*Handler handler = new Handler();
+        Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -35,11 +35,11 @@ public class UpdateScheduler {
                 Toast.makeText(RssApplication.getContext(), "widget update", Toast.LENGTH_SHORT).show();
                 handler.postDelayed(this, 7* 1000L);
             }
-        }, 7* 1000L);*/
+        }, 7* 1000L);
     }
 
     public void refreshWidgetNowAndScheduleUpdates(int appWidgetId){
-        //if (!ids.contains(appWidgetId)) ids.add(appWidgetId);
+        if (!ids.contains(appWidgetId)) ids.add(appWidgetId);
         Intent intent = new Intent(context, WidgetsRefreshService.class);
         intent.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
         intent.setAction(WidgetsRefreshService.ACTION_REGULAR_REFRESH);
@@ -48,8 +48,10 @@ public class UpdateScheduler {
     }
 
     public void cancel(int appWidgetId){
-        /*if (ids.contains(appWidgetId)) {
-            ids.remove(appWidgetId);
-        }*/
+        for(int i=0; i < ids.size(); i++){
+            if (ids.get(i) == appWidgetId)
+            ids.remove(i);
+            break;
+        }
     }
 }

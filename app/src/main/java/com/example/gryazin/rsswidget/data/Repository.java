@@ -58,5 +58,7 @@ public interface Repository {
     5.  Make NetworkService.
     6. Polish by notes... MB tests.
 
+    - buttons bugfix: if the unwanted click has gone, don't make offsets!
+
     */
 }

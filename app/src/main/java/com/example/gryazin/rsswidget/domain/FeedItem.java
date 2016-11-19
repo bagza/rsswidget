@@ -83,7 +83,7 @@ public class FeedItem implements Comparable<FeedItem>{
     }
 
     private int compareByDates(FeedItem o){
-        return date.get().compareTo(o.maybeGetDate().get());
+        return -1 * date.get().compareTo(o.maybeGetDate().get());
     }
 
     private int compareByTitles(FeedItem o){

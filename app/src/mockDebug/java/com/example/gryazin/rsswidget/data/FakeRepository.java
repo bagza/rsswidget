@@ -40,14 +40,14 @@ public class FakeRepository extends LocalRepository{
         storeFeeds(feedItems1);
         storeFeeds(feedItems2);
         saveTimestamp(System.currentTimeMillis());
-       /* handler.postDelayed(new Runnable() {
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 makeUpdate();
-                handler.postDelayed(this, 15 * 1000L);
+                handler.postDelayed(this, 3 * 1000L);
                 Toast.makeText(RssApplication.getContext(), "feed added", Toast.LENGTH_SHORT).show();
             }
-        }, 15 * 1000L);*/
+        }, 3 * 1000L);
     }
 
     public void makeUpdate(){
