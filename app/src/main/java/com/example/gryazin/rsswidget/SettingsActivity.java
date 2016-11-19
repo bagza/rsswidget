@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.PowerManager;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -28,9 +27,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.example.gryazin.rsswidget.data.Repository;
-import com.example.gryazin.rsswidget.data.services.UpdateScheduler;
+import com.example.gryazin.rsswidget.data.update.UpdateScheduler;
 import com.example.gryazin.rsswidget.domain.RssSettings;
-import com.example.gryazin.rsswidget.utils.Utils;
 
 import javax.inject.Inject;
 
@@ -214,7 +212,7 @@ public class SettingsActivity extends PreferenceActivity {
     }
 
     private void runService(){
-        updateScheduler.refreshWidgetNowAndScheduleUpdates(getAppWidgetId());
+        updateScheduler.refreshWidget(getAppWidgetId());
     }
 
     private void finishOk(){

@@ -5,8 +5,8 @@
     <uses-feature
         android:name="android.software.app_widgets"
         android:required="true"/>
-    <uses-permission
-        android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
 
     <application
@@ -37,7 +37,10 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".data.services.WidgetsRefreshService"
+        <service android:name=".data.update.WidgetsRefreshService"
+            android:exported="false"/>
+
+        <service android:name=".data.network.NetworkFetchService"
             android:exported="false"/>
     </application>
 

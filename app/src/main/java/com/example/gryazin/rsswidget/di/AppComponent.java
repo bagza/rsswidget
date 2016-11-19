@@ -7,7 +7,8 @@ import com.example.gryazin.rsswidget.RssApplication;
 import com.example.gryazin.rsswidget.RssWigdetProvider;
 import com.example.gryazin.rsswidget.SettingsActivity;
 import com.example.gryazin.rsswidget.data.Repository;
-import com.example.gryazin.rsswidget.data.services.WidgetsRefreshService;
+import com.example.gryazin.rsswidget.data.network.NetworkFetchService;
+import com.example.gryazin.rsswidget.data.update.WidgetsRefreshService;
 
 import javax.inject.Singleton;
 
@@ -31,4 +32,5 @@ public interface AppComponent {
     void inject(WidgetsRefreshService service);
     void inject(RssWigdetProvider provider);
     void inject(SettingsActivity settingsActivity);
+    void inject(NetworkFetchService service);
 }

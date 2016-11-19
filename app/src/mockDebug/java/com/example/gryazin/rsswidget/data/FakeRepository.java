@@ -37,9 +37,9 @@ public class FakeRepository extends LocalRepository{
     public FakeRepository(RssDatabase database, Preferences preferences) {
         super(database, preferences);
         bakeFakes();
-        storeFeeds(feedItems1);
-        storeFeeds(feedItems2);
-        saveTimestamp(System.currentTimeMillis());
+        //storeFeeds(feedItems1);
+        //storeFeeds(feedItems2);
+        /*saveTimestamp(System.currentTimeMillis());
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -47,7 +47,7 @@ public class FakeRepository extends LocalRepository{
                 handler.postDelayed(this, 3 * 1000L);
                 Toast.makeText(RssApplication.getContext(), "feed added", Toast.LENGTH_SHORT).show();
             }
-        }, 3 * 1000L);
+        }, 3 * 1000L);*/
     }
 
     public void makeUpdate(){

@@ -4,13 +4,12 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import com.example.gryazin.rsswidget.R;
-import com.example.gryazin.rsswidget.data.services.WidgetsRefreshService;
-import com.example.gryazin.rsswidget.domain.FeedItem;
-import com.example.gryazin.rsswidget.domain.UpdateStatus;
+import com.example.gryazin.rsswidget.data.update.WidgetsRefreshService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,7 +46,7 @@ public class RemoteViewsRenderer {
         }
         remoteViews.setTextViewText(R.id.text_title, viewModel.getTitle());
         remoteViews.setTextViewText(R.id.text_subtitle, context.getString(R.string.feed_update_string, timeUpdateString));
-        remoteViews.setTextViewText(R.id.text_body, viewModel.getBody());
+        remoteViews.setTextViewText(R.id.text_body, Html.fromHtml(viewModel.getBody()));
     }
 
     //TODO refactor duplicate code

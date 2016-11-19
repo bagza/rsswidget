@@ -48,14 +48,17 @@ public interface Repository {
         + re-render on button clicks - CHECK HERE
 
         3.1
-        - remove old settings
+        + remove old settings
         - clear on disable
 
 
     4.  Make Alarms
         -UPDATESCHEDULER - implement!
         -make alarms for rendering - see timestamp update.
+
     5.  Make NetworkService.
+        -HANDLER FETCH EXCEPTION!
+
     6. Polish by notes... MB tests.
 
     - buttons bugfix: if the unwanted click has gone, don't make offsets!

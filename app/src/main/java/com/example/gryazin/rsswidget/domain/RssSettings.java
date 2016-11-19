@@ -5,9 +5,6 @@ package com.example.gryazin.rsswidget.domain;
  */
 
 public class RssSettings {
-    private static long ONE_MINUTE_MS = 1 * 60 * 1000L;
-    public static Long pollPeriodMs = ONE_MINUTE_MS;
-
     private int appWidgetId;
     private String rssUrl;
 

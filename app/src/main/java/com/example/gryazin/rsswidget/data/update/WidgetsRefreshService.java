@@ -1,26 +1,33 @@
-package com.example.gryazin.rsswidget.data.services;
+package com.example.gryazin.rsswidget.data.update;
 
 import android.app.IntentService;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.content.OperationApplicationException;
+import android.os.RemoteException;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.example.gryazin.rsswidget.R;
 import com.example.gryazin.rsswidget.RssApplication;
 import com.example.gryazin.rsswidget.data.Repository;
-import com.example.gryazin.rsswidget.domain.FeedItem;
-import com.example.gryazin.rsswidget.ui.FeedViewModel;
-import com.example.gryazin.rsswidget.domain.UpdateStatus;
+import com.example.gryazin.rsswidget.data.network.FeedPojo;
 import com.example.gryazin.rsswidget.ui.WidgetPresenter;
 
-import java.util.Date;
-import java.util.SortedSet;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.Collection;
 
 import javax.inject.Inject;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Dmitry Gryazin on 16.11.2016.
@@ -41,7 +48,7 @@ public class WidgetsRefreshService extends IntentService {
     WidgetPresenter presenter;
 
     public WidgetsRefreshService() {
-        super("WidgetsRefreshService");
+        super("com.example.gryazin.rsswidget.data.services.WidgetsRefreshService");
         RssApplication.getAppComponent().inject(this);
     }
 

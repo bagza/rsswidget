@@ -2,12 +2,10 @@ package com.example.gryazin.rsswidget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
-import android.widget.RemoteViews;
 
 import com.example.gryazin.rsswidget.data.Repository;
-import com.example.gryazin.rsswidget.data.services.UpdateScheduler;
+import com.example.gryazin.rsswidget.data.update.UpdateScheduler;
 
 import javax.inject.Inject;
 
@@ -41,7 +39,7 @@ public class RssWigdetProvider extends AppWidgetProvider {
         inject();
 
         for (int appWidgetId : appWidgetIds){
-            updateScheduler.refreshWidgetNowAndScheduleUpdates(appWidgetId);
+            updateScheduler.refreshWidget(appWidgetId);
         }
     }
 
