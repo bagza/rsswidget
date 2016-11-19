@@ -59,8 +59,14 @@ public class LocalRepository implements Repository {
         database.storeSettings(settings);
     }
 
+    @Override
+    public void deleteSettings(int widgetId) {
+        database.deleteSettings(widgetId);
+    }
+
     private String getChannelUrlForWidget(int widgetId){
-        RssSettings mSetting = getAllSettings().stream()
+        Collection<? extends RssSettings> allSettings = getAllSettings();
+        RssSettings mSetting = allSettings.stream()
                 .filter(setting -> setting.getAppWidgetId() == widgetId)
                 .findAny()
                 .orElse(null);

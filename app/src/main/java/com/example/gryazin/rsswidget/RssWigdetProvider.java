@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.widget.RemoteViews;
 
+import com.example.gryazin.rsswidget.data.Repository;
 import com.example.gryazin.rsswidget.data.services.UpdateScheduler;
 
 import javax.inject.Inject;
@@ -18,6 +19,8 @@ public class RssWigdetProvider extends AppWidgetProvider {
 
     @Inject
     UpdateScheduler updateScheduler;
+    @Inject
+    Repository repository;
 
     private void inject(){
         RssApplication.getAppComponent().inject(this);
@@ -40,6 +43,24 @@ public class RssWigdetProvider extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds){
             updateScheduler.refreshWidgetNowAndScheduleUpdates(appWidgetId);
         }
+    }
 
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        super.onDeleted(context, appWidgetIds);
+        inject();
+
+        for (int id : appWidgetIds){
+            updateScheduler.cancel(id);
+            repository.deleteSettings(id);
+        }
+    }
+
+    @Override
+    public void onDisabled(Context context) {
+        super.onDisabled(context);
+        inject();
+
+        //TODO cancel all and delete data
     }
 }

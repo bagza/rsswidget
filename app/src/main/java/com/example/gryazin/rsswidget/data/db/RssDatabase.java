@@ -2,8 +2,10 @@ package com.example.gryazin.rsswidget.data.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.gryazin.rsswidget.data.WidgetState;
+import com.example.gryazin.rsswidget.data.db.queries.DeleteSettingsQuery;
 import com.example.gryazin.rsswidget.data.db.queries.ReadChannelFeeds;
 import com.example.gryazin.rsswidget.data.db.queries.ReadQuery;
 import com.example.gryazin.rsswidget.data.db.queries.ReadSettingsQuery;
@@ -79,6 +81,10 @@ public class RssDatabase {
 
     public Collection<? extends RssSettings> getAllSettings(){
         return readDatabase(new ReadSettingsQuery());
+    }
+
+    public void deleteSettings(int widgetId){
+        writeDatabase(new DeleteSettingsQuery(widgetId));
     }
 
     public void storeWidgetState(WidgetState widgetState){

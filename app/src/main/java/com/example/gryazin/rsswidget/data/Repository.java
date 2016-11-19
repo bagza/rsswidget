@@ -19,6 +19,7 @@ public interface Repository {
     UpdateStatus getUpdateStatus();
     Collection<? extends RssSettings> getAllSettings();
     void saveSettings(RssSettings settings);
+    void deleteSettings(int widgetId);
     WidgetState getWidgetStateById(int widgetId);
     void saveWidgetState(WidgetState widgetState);
     void saveTimestamp(long timestamp);
@@ -44,7 +45,7 @@ public interface Repository {
         + add buttons and rendering
         + save view state
         + read view state on buttons click
-        - re-render on button clicks - CHECK HERE
+        + re-render on button clicks - CHECK HERE
 
         3.1
         - remove old settings

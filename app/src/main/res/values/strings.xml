@@ -4,6 +4,7 @@
     <!-- Feed strings -->
     <string name="feed_empty_title">Empty</string>
     <string name="feed_error_title">Error</string>
+    <string name="feed_update_string">Updated at %s</string>
 
     <!-- Strings related to Settings -->
     <string name="action_confirm">Done</string>

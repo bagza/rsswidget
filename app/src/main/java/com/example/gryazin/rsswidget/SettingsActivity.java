@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -191,8 +192,6 @@ public class SettingsActivity extends PreferenceActivity {
     public void confirmAndRunRss(String url){
         Toast.makeText(this, "CONFIRM: " + getAppWidgetId() + ", " + url, Toast.LENGTH_SHORT).show();
         saveSettingsAsync(url, getAppWidgetId());
-        runService();
-        finishOk();
     }
 
     //Need async, because it might block if the db is locked.
@@ -203,6 +202,13 @@ public class SettingsActivity extends PreferenceActivity {
             protected Void doInBackground(Void... voids) {
                 repository.saveSettings(settings);
                 return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                runService();
+                finishOk();
             }
         }.execute();
     }

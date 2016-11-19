@@ -12,6 +12,7 @@ import com.example.gryazin.rsswidget.data.services.WidgetsRefreshService;
 import com.example.gryazin.rsswidget.domain.FeedItem;
 import com.example.gryazin.rsswidget.domain.UpdateStatus;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -38,13 +39,14 @@ public class RemoteViewsRenderer {
     private void renderViewsWithViewModel(RemoteViews remoteViews, FeedViewModel viewModel){
         String timeUpdateString;
         if (viewModel.maybeGetTimestamp().isPresent()){
-            timeUpdateString = new Date(viewModel.maybeGetTimestamp().get()).toString();
+            SimpleDateFormat timeFormat = new SimpleDateFormat("kk:mm:ss");
+            timeUpdateString = timeFormat.format(new Date(viewModel.maybeGetTimestamp().get()));
         }
         else {
             timeUpdateString = "...";
         }
         remoteViews.setTextViewText(R.id.text_title, viewModel.getTitle());
-        remoteViews.setTextViewText(R.id.text_subtitle, timeUpdateString);
+        remoteViews.setTextViewText(R.id.text_subtitle, context.getString(R.string.feed_update_string, timeUpdateString));
         remoteViews.setTextViewText(R.id.text_body, viewModel.getBody());
     }
 
