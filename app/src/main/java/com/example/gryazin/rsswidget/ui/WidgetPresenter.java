@@ -120,22 +120,27 @@ public class WidgetPresenter {
                     return feedItems.first();
                 }
                 else if (positionOffset == 0){
-                    return feedItems.stream()
-                            .filter((feed) -> feed.getGuid().equals(lastWatchedFeedGuid))
-                            .findFirst()
-                            .orElse(null);
+                    return getFeedByGuid(lastWatchedFeedGuid);
                 }
-                else if (positionOffset != 0){
-                    int lastPosition = getItemPosOrGetLastPos(feedItems, lastWatchedFeedGuid);
-                    int newPosition = lastPosition + positionOffset;
-                    Utils.debugAssert(newPosition >= 0 || newPosition < feedItems.size());
-                    //trick to get Kth element with streams
-                    return feedItems.stream()
-                            .limit(newPosition + 1)
-                            .reduce((a, b) -> b)
-                            .orElse(null);
-                }
-                return null;
+                return getFeedByGuidWithOffset(lastWatchedFeedGuid, positionOffset);
+            }
+
+            private FeedItem getFeedByGuid(String guid){
+                return feedItems.stream()
+                        .filter((feed) -> feed.getGuid().equals(guid))
+                        .findFirst()
+                        .orElse(null);
+            }
+
+            private FeedItem getFeedByGuidWithOffset(String guid, int offset){
+                int lastPosition = getItemPosOrGetLastPos(feedItems, guid);
+                int newPosition = lastPosition + offset;
+                Utils.debugAssert(newPosition >= 0 || newPosition < feedItems.size());
+                //trick to get Kth element with streams
+                return feedItems.stream()
+                        .limit(newPosition + 1)
+                        .reduce((a, b) -> b)
+                        .orElse(null);
             }
 
             @Override

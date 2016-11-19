@@ -57,8 +57,6 @@ public class FakeRepository extends LocalRepository{
         storeFeeds(feedItems);
     }
 
-
-
     private void bakeFakes(){
         for (int i = 0; i < 3; i++){
             feedItems1.add(generateRandomFeed());
