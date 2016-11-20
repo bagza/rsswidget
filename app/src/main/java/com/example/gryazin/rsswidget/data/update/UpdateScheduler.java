@@ -1,7 +1,10 @@
 package com.example.gryazin.rsswidget.data.update;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.widget.Toast;
 
@@ -18,23 +21,29 @@ import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
 
 public class UpdateScheduler {
     private static long ONE_MINUTE_MS = 1 * 60 * 1000L;
-    public static Long pollPeriodMs = ONE_MINUTE_MS;
+    private static long TEN_SEC_MS = 10 * 1000L;
+    public static Long pollPeriodMs = TEN_SEC_MS;
 
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
     private Context context;
     @Inject
     public UpdateScheduler(Context context) {
         this.context = context;
+        alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, RssAlarmReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Handler handler = new Handler();
+        /*Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 //TEST
-                refreshFetch();
+                refreshFetchAndReschedule();
                 Toast.makeText(RssApplication.getContext(), "widget update", Toast.LENGTH_SHORT).show();
                 handler.postDelayed(this, 7* 1000L);
             }
-        }, 7* 1000L);
+        }, 7* 1000L);*/
     }
 
     public void refreshAllWidgets(int[] appWidgetIds){
@@ -48,15 +57,37 @@ public class UpdateScheduler {
         intent.putExtra(EXTRA_APPWIDGET_ID, appWidgetId);
         intent.setAction(WidgetsRefreshService.ACTION_REGULAR_REFRESH);
         context.startService(intent);
-        //TODO ALARMS!!
     }
 
-    public void cancel(int appWidgetId){
-
-    }
-
-    public void refreshFetch(){
+    public void refreshFetchAndReschedule(){
+        cancelFetchAlarm();
+        setFetchAlarm();
         Intent intent = new Intent(context, NetworkFetchService.class);
         context.startService(intent);
+    }
+
+    public void setFetchAlarm() {
+        alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + pollPeriodMs, alarmIntent);
+        /*// Enable {@code SampleBootReceiver} to automatically restart the alarm when the
+        // device is rebooted.
+        //ComponentName receiver = new ComponentName(context, SampleBootReceiver.class);
+        PackageManager pm = context.getPackageManager();
+        *//*pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);*/
+    }
+
+    public void cancelFetchAlarm() {
+        // If the alarm has been set, cancel it.
+        if (alarmMgr!= null) {
+            alarmMgr.cancel(alarmIntent);
+        }
+        // Disable {@code SampleBootReceiver} so that it doesn't automatically restart the
+        // alarm when the device is rebooted.
+        /*ComponentName receiver = new ComponentName(context, SampleBootReceiver.class);
+        PackageManager pm = context.getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);*/
     }
 }

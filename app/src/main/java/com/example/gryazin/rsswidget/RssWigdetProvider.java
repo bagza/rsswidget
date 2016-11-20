@@ -39,7 +39,6 @@ public class RssWigdetProvider extends AppWidgetProvider {
         inject();
 
         for (int id : appWidgetIds){
-            updateScheduler.cancel(id);
             repository.deleteSettings(id);
         }
     }
@@ -48,7 +47,7 @@ public class RssWigdetProvider extends AppWidgetProvider {
     public void onDisabled(Context context) {
         super.onDisabled(context);
         inject();
-
-        //TODO cancel all and delete data
+        updateScheduler.cancelFetchAlarm();
+        //TODO delete data
     }
 }

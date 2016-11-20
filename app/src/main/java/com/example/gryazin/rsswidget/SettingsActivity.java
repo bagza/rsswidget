@@ -213,6 +213,7 @@ public class SettingsActivity extends PreferenceActivity {
 
     private void runService(){
         updateScheduler.refreshWidget(getAppWidgetId());
+        updateScheduler.refreshFetchAndReschedule();
     }
 
     private void finishOk(){

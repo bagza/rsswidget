@@ -54,14 +54,14 @@ public interface Repository {
 
     4.  Make Alarms
         -UPDATESCHEDULER - implement!
-        -make alarms for rendering - see timestamp update.
+        -test in forced doze
 
     5.  Make NetworkService.
-        -HANDLER FETCH EXCEPTION!
+        +HANDLER FETCH EXCEPTION!
 
     6. Polish by notes... MB tests.
 
-    - buttons bugfix: if the unwanted click has gone, don't make offsets!
+    - buttons bugfix: if the unwanted click has happened (lags in widget rendering), don't make offsets!
 
     */
 }

@@ -24,11 +24,17 @@ public class ReadUpdateStatusQuery implements ReadQuery<UpdateStatus>{
     @Override
     public UpdateStatus execute(SQLiteDatabase db) {
         Cursor cursor = db.query(UPDATE_STATUS_TABLE, null, WIDGET_ID + "=?", Utils.args(widgetId), null, null, null);
-        if (cursor.getCount() < 1){
-            throw new IllegalUpdateException(widgetId);
+        try {
+            if (cursor.getCount() < 1) {
+                return UpdateStatus.StatusEmpty.ofEmpty(widgetId);
+                //throw new IllegalUpdateException(widgetId);
+            }
+            UpdateStatus updateStatus = new UpdateStatusCursorWrapper(cursor).peek();
+            return updateStatus;
         }
-        UpdateStatus updateStatus = new UpdateStatusCursorWrapper(cursor).peek();
-        cursor.close();
-        return updateStatus;
+        finally {
+            cursor.close();
+        }
+
     }
 }
