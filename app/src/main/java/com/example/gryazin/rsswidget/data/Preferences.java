@@ -13,7 +13,7 @@ import javax.inject.Inject;
  */
 
 public class Preferences {
-    private final static String TIMESTAMP_KEY = "timestamp";
+    private final static String FREQ_KEY = "freq";
     private Context context;
     private SharedPreferences sharedPreferences;
 
@@ -29,18 +29,18 @@ public class Preferences {
                 .apply();
     }
 
-    public boolean hasTimestamp(){
-        return sharedPreferences.contains(TIMESTAMP_KEY);
+    public boolean hasFreq(){
+        return sharedPreferences.contains(FREQ_KEY);
     }
 
-    public long getUpdateTimestamp(){
-        Utils.debugAssert(hasTimestamp());
-        return sharedPreferences.getLong(TIMESTAMP_KEY, 0L);
+    public long getUpdateFreq(){
+        Utils.debugAssert(hasFreq());
+        return sharedPreferences.getLong(FREQ_KEY, 0L);
     }
 
-    public void storeUpdateTimestamp(long value){
+    public void storeUpdateFreq(long value){
         sharedPreferences.edit()
-                .putLong(TIMESTAMP_KEY, value)
+                .putLong(FREQ_KEY, value)
                 .apply();
     }
 }

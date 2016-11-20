@@ -4,7 +4,7 @@
     android:minHeight="140dp"
     android:updatePeriodMillis="0"
     android:initialLayout="@layout/single_item_rss_widget"
-    android:previewImage="@drawable/ic_notifications_black_24dp"
+    android:previewImage="@drawable/preview"
     android:configure="com.example.gryazin.rsswidget.SettingsActivity"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"

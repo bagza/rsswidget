@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
+import com.example.gryazin.rsswidget.data.Preferences;
 import com.example.gryazin.rsswidget.data.Repository;
 import com.example.gryazin.rsswidget.data.update.UpdateScheduler;
 import com.example.gryazin.rsswidget.domain.RssSettings;
@@ -38,6 +39,9 @@ public class SettingsActivity extends PreferenceActivity {
     UpdateScheduler updateScheduler;
     @Inject
     Repository repository;
+    @Inject
+    Preferences preferences;
+
     WhitelistProvider whitelistProvider = new WhitelistProvider();
     /**
      * A preference value change listener that updates the preference's summary
@@ -187,8 +191,9 @@ public class SettingsActivity extends PreferenceActivity {
         setResult(RESULT_CANCELED, intent);
     }
 
-    public void confirmAndRunRss(String url){
+    public void confirmAndRunRss(String url, long freqInSec){
         Toast.makeText(this, "CONFIRM: " + getAppWidgetId() + ", " + url, Toast.LENGTH_SHORT).show();
+        preferences.storeUpdateFreq(freqInSec * 1000L);
         saveSettingsAsync(url, getAppWidgetId());
     }
 
@@ -226,6 +231,7 @@ public class SettingsActivity extends PreferenceActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
         private static final String RSS_URL_PREF_KEY = "rss_url";
+        private static final String SYNC_PREF_KEY = "sync_frequency";
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -233,6 +239,7 @@ public class SettingsActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.pref_general);
             setHasOptionsMenu(true);
             bindURLPreferenceWithValidator((EditTextPreference) findPreference(RSS_URL_PREF_KEY));
+            findPreference(SYNC_PREF_KEY).setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
         }
 
         @Override
@@ -259,7 +266,9 @@ public class SettingsActivity extends PreferenceActivity {
         private void confirm(){
             SettingsActivity host = (SettingsActivity)getActivity();
             String url = ((EditTextPreference)findPreference(RSS_URL_PREF_KEY)).getText();
-            host.confirmAndRunRss(url);
+            ListPreference sync = ((ListPreference)findPreference(SYNC_PREF_KEY));
+            long freqInSec = Long.valueOf(sync.getValue());
+            host.confirmAndRunRss(url, freqInSec);
         }
 
         private void bindURLPreferenceWithValidator(EditTextPreference preference) {

@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import com.example.gryazin.rsswidget.RssApplication;
+import com.example.gryazin.rsswidget.data.Preferences;
 import com.example.gryazin.rsswidget.data.network.NetworkFetchService;
 
 import javax.inject.Inject;
@@ -21,30 +22,18 @@ import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
  */
 
 public class UpdateScheduler {
-    private static long ONE_MINUTE_MS = 1 * 60 * 1000L;
-    private static long TEN_SEC_MS = 10 * 1000L;
-    public static Long pollPeriodMs = TEN_SEC_MS;
 
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
     private Context context;
+    private Preferences preferences;
     @Inject
-    public UpdateScheduler(Context context) {
+    public UpdateScheduler(Context context, Preferences preferences) {
+        this.preferences = preferences;
         this.context = context;
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, RssAlarmReceiver.class);
         alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        /*Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //TEST
-                refreshFetchAndReschedule();
-                Toast.makeText(RssApplication.getContext(), "widget update", Toast.LENGTH_SHORT).show();
-                handler.postDelayed(this, 7* 1000L);
-            }
-        }, 7* 1000L);*/
     }
 
     public void refreshAllWidgets(int[] appWidgetIds){
@@ -68,7 +57,7 @@ public class UpdateScheduler {
     }
 
     public void setFetchAlarm() {
-        alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + pollPeriodMs, alarmIntent);
+        alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + preferences.getUpdateFreq(), alarmIntent);
         enableRebootStartUp();
     }
 
