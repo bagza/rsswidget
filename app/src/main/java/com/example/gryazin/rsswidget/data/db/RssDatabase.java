@@ -2,24 +2,24 @@ package com.example.gryazin.rsswidget.data.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.example.gryazin.rsswidget.data.WidgetState;
 import com.example.gryazin.rsswidget.data.db.queries.DeleteSettingsQuery;
 import com.example.gryazin.rsswidget.data.db.queries.ReadChannelFeeds;
 import com.example.gryazin.rsswidget.data.db.queries.ReadQuery;
 import com.example.gryazin.rsswidget.data.db.queries.ReadSettingsQuery;
+import com.example.gryazin.rsswidget.data.db.queries.ReadUpdateStatusQuery;
 import com.example.gryazin.rsswidget.data.db.queries.ReadWidgetStateQuery;
 import com.example.gryazin.rsswidget.data.db.queries.StoreFeedsQuery;
 import com.example.gryazin.rsswidget.data.db.queries.StoreSettingsQuery;
+import com.example.gryazin.rsswidget.data.db.queries.StoreUpdateStatusQuery;
 import com.example.gryazin.rsswidget.data.db.queries.StoreWidgetStateQuery;
 import com.example.gryazin.rsswidget.data.db.queries.WriteQuery;
 import com.example.gryazin.rsswidget.domain.FeedItem;
 import com.example.gryazin.rsswidget.domain.RssSettings;
+import com.example.gryazin.rsswidget.domain.UpdateStatus;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.inject.Inject;
@@ -93,5 +93,13 @@ public class RssDatabase {
 
     public WidgetState getWidgetStateById(int widgetId){
         return readDatabase(new ReadWidgetStateQuery(widgetId));
+    }
+
+    public void storeUpdateStatus(UpdateStatus status){
+        writeDatabase(new StoreUpdateStatusQuery(status));
+    }
+
+    public UpdateStatus getUpdateStatusForWidget(int widgetId){
+        return readDatabase(new ReadUpdateStatusQuery(widgetId));
     }
 }

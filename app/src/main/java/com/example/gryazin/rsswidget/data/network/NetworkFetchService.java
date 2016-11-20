@@ -4,20 +4,20 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.gryazin.rsswidget.R;
 import com.example.gryazin.rsswidget.RssApplication;
 import com.example.gryazin.rsswidget.data.Repository;
 import com.example.gryazin.rsswidget.data.update.UpdateScheduler;
 import com.example.gryazin.rsswidget.domain.FeedItem;
 import com.example.gryazin.rsswidget.domain.RssSettings;
+import com.example.gryazin.rsswidget.domain.UpdateStatus;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -49,20 +49,28 @@ public class NetworkFetchService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Collection<? extends RssSettings> allSettings = repository.getAllSettings();
-        fetchAndSaveAllFeeds(allSettings);
-        repository.saveTimestamp(System.currentTimeMillis());
+        processAllWidgets(allSettings);
         kickUpdateForAll(allSettings);
     }
 
-    private void fetchAndSaveAllFeeds(Collection<? extends RssSettings> allSettings){
-        for (RssSettings settings : allSettings){
+    private void processAllWidgets(Collection<? extends RssSettings> allSettings){
+        for (RssSettings settings : allSettings) {
             String channelUrl = settings.getRssUrl();
-            Collection<FeedPojo> feedPojos = fetchFeedsByUrl(channelUrl);
-            Log.d("FETCH RESULT", "feedPojos:, " + (feedPojos != null && feedPojos.size() > 0 ? ((FeedPojo)feedPojos.toArray()[0]).getTitle() : ""));
-            Collection<FeedItem> feeds = FeedPojoMapper.mapAll(feedPojos, channelUrl);
-            repository.storeFeeds(feeds);
+            int widgetId = settings.getAppWidgetId();
+            try {
+                Collection<FeedPojo> feedPojos = fetchFeedsByUrl(channelUrl);
+                Log.d("FETCH RESULT", "feedPojos:, " + (feedPojos != null && feedPojos.size() > 0 ? ((FeedPojo) feedPojos.toArray()[0]).getTitle() : ""));
+                Collection<FeedItem> feeds = FeedPojoMapper.mapAll(feedPojos, channelUrl);
+                repository.storeFeeds(feeds);
+                repository.saveUpdateStatus(UpdateStatus.StatusSuccess.ofSyncTimestamp(widgetId, System.currentTimeMillis()));
+            }
+            catch (NetworkFetchException fail){
+                repository.saveUpdateStatus(UpdateStatus.StatusError.ofErrorMessage(widgetId, getString(R.string.update_fail, channelUrl, fail.getLocalizedMessage())));
+            }
         }
     }
+
+
 
     private void kickUpdateForAll(Collection<? extends RssSettings> allSettings){
         int[] ids = new int[allSettings.size()];

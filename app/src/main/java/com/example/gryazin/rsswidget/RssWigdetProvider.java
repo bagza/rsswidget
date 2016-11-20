@@ -24,16 +24,6 @@ public class RssWigdetProvider extends AppWidgetProvider {
         RssApplication.getAppComponent().inject(this);
     }
 
-    /**
-     * I think the doc lies that "the system will not send the ACTION_APPWIDGET_UPDATE broadcast when a configuration Activity is launched".
-     * I DO recieve it on genymotion. And that's sad.
-     *
-     * Need to ignore the first update OR handle expections somewhere.
-     *
-     * @param ctxt
-     * @param mgr
-     * @param appWidgetIds
-     */
     @Override
     public void onUpdate(Context ctxt, AppWidgetManager mgr, int[] appWidgetIds) {
         inject();

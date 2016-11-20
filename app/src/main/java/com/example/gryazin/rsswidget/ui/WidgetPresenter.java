@@ -51,19 +51,19 @@ public class WidgetPresenter {
     }
 
     private FeedViewModel bakeViewModel(int widgetId, int positionOffset){
-        return getUpdateStatus().accept(new UpdateStatus.UpdateStatusVisitor<FeedViewModel>() {
+        return getUpdateStatus(widgetId).accept(new UpdateStatus.UpdateStatusVisitor<FeedViewModel>() {
             @Override
-            public FeedViewModel onSuccess(long timestamp) {
+            public FeedViewModel onSuccess(int widgetId, long timestamp) {
                 return bakeSuccessFeedModelAndSaveWidgetState(widgetId, positionOffset, timestamp);
             }
 
             @Override
-            public FeedViewModel onEmpty() {
+            public FeedViewModel onEmpty(int widgetId) {
                 return bakeEmptyModel();
             }
 
             @Override
-            public FeedViewModel onError(String message) {
+            public FeedViewModel onError(int widgetId, String message) {
                 return bakeErrorModel(message);
             }
         });
@@ -179,7 +179,7 @@ public class WidgetPresenter {
         return repository.getAllFeedsByWidgetId(widgetId);
     }
 
-    private UpdateStatus getUpdateStatus(){
-        return repository.getUpdateStatus();
+    private UpdateStatus getUpdateStatus(int widgetId){
+        return repository.getUpdateStatusForWidget(widgetId);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.gryazin.rsswidget.data;
 
 import com.example.gryazin.rsswidget.data.db.RssDatabase;
+import com.example.gryazin.rsswidget.data.update.IllegalUpdateException;
 import com.example.gryazin.rsswidget.domain.FeedItem;
 import com.example.gryazin.rsswidget.domain.RssSettings;
 import com.example.gryazin.rsswidget.domain.UpdateStatus;
@@ -43,18 +44,6 @@ public class LocalRepository implements Repository {
     }
 
     @Override
-    public UpdateStatus getUpdateStatus() {
-        if (!preferences.hasTimestamp()){
-            return UpdateStatus.StatusEmpty.ofEmpty();
-        }
-        //TODO make error here
-        else{
-            long timestamp = preferences.getUpdateTimestamp();
-            return UpdateStatus.StatusSuccess.ofSyncTimestamp(timestamp);
-        }
-    }
-
-    @Override
     public void saveSettings(RssSettings settings) {
         database.storeSettings(settings);
     }
@@ -74,7 +63,7 @@ public class LocalRepository implements Repository {
                 //There is a similar issue in oracle tracker already.
                 //.orElseThrow(() -> new IllegalArgumentException("No such widgetid in settings"));
         if (mSetting == null){
-            throw new IllegalStateException("No such widgetid in settings");
+            throw new IllegalUpdateException(widgetId);
         }
         return mSetting.getRssUrl();
     }
@@ -89,8 +78,11 @@ public class LocalRepository implements Repository {
         database.storeWidgetState(widgetState);
     }
 
-    @Override
-    public void saveTimestamp(long timestamp) {
-        preferences.storeUpdateTimestamp(timestamp);
+    public void saveUpdateStatus(UpdateStatus status){
+        database.storeUpdateStatus(status);
+    }
+
+    public UpdateStatus getUpdateStatusForWidget(int widgetId){
+        return database.getUpdateStatusForWidget(widgetId);
     }
 }

@@ -60,9 +60,7 @@ public class WidgetsRefreshService extends IntentService {
                 updateAppWidget(appWidgetId, intent);
             }
         }
-        catch (IllegalStateException e){
-            //means there was illegal update call to receiver while the settings were not set yet.
-            //See Receiver comments also
+        catch (IllegalUpdateException e){
             Log.d("ILLEGAL UPDATE", e.getLocalizedMessage());
         }
     }

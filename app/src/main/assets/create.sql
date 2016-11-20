@@ -16,6 +16,13 @@ CREATE TABLE settings (
     channel_url text NOT NULL
 );
 
+CREATE TABLE updates (
+    widget_id integer NOT NULL PRIMARY KEY,
+    update_timestamp integer,
+    error_message text,
+    FOREIGN KEY (widget_id) REFERENCES settings(widget_id) ON DELETE CASCADE  ON UPDATE CASCADE
+);
+
 CREATE TABLE view_states (
     widget_id integer NOT NULL PRIMARY KEY,
     last_guid text NOT NULL,

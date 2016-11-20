@@ -53,9 +53,6 @@ dependencies {
     debugAnnotationProcessor 'com.google.dagger:dagger-compiler:2.2'
     provided  'javax.annotation:jsr250-api:1.0'
 
-    //Simple xml-rss-atom parser
-    compile 'com.einmalfel:earl:1.0.0'
-
     // Dependencies for local unit tests
     testCompile "junit:junit:4.12"
     testCompile "org.mockito:mockito-core:2.2.11"

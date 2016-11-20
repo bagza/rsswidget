@@ -16,13 +16,13 @@ import java.util.TreeSet;
 public interface Repository {
     void storeFeeds(Collection<? extends FeedItem> feedItems);
     TreeSet<? extends FeedItem> getAllFeedsByWidgetId(int widgetId);
-    UpdateStatus getUpdateStatus();
     Collection<? extends RssSettings> getAllSettings();
     void saveSettings(RssSettings settings);
     void deleteSettings(int widgetId);
     WidgetState getWidgetStateById(int widgetId);
     void saveWidgetState(WidgetState widgetState);
-    void saveTimestamp(long timestamp);
+    void saveUpdateStatus(UpdateStatus status);
+    UpdateStatus getUpdateStatusForWidget(int widgetId);
 
     /*TODO PLAN
     transfer object - to view model

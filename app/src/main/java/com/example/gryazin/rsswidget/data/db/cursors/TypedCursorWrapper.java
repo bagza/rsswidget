@@ -63,6 +63,15 @@ public abstract class TypedCursorWrapper<T> extends CursorWrapper {
         }
     }
 
+    public boolean hasNonNullValue(String columnName){
+        int index = getColumnIndex(columnName);
+        if (isValidIndex(index)) {
+            return !isNull(index);
+        } else {
+            return false;
+        }
+    }
+
     private boolean isValidIndex(int index) {
         return index >= 0 && index < getColumnCount();
     }
