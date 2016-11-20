@@ -135,7 +135,9 @@ public class WidgetPresenter {
             private FeedItem getFeedByGuidWithOffset(String guid, int offset){
                 int lastPosition = getItemPosOrGetLastPos(feedItems, guid);
                 int newPosition = lastPosition + offset;
-                Utils.debugAssert(newPosition >= 0 || newPosition < feedItems.size());
+                //can't assert this, because of rendering lags, so the click can come when shouldn't
+                //Utils.debugAssert(newPosition >= 0 || newPosition < feedItems.size());
+                newPosition = newPosition < 0 ? 0 : newPosition >= feedItems.size()? feedItems.size() - 1 : newPosition;
                 //trick to get Kth element with streams
                 return feedItems.stream()
                         .limit(newPosition + 1)

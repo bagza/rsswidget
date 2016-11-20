@@ -2,6 +2,7 @@ package com.example.gryazin.rsswidget.data.update;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -68,26 +69,27 @@ public class UpdateScheduler {
 
     public void setFetchAlarm() {
         alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + pollPeriodMs, alarmIntent);
-        /*// Enable {@code SampleBootReceiver} to automatically restart the alarm when the
-        // device is rebooted.
-        //ComponentName receiver = new ComponentName(context, SampleBootReceiver.class);
-        PackageManager pm = context.getPackageManager();
-        *//*pm.setComponentEnabledSetting(receiver,
-                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                PackageManager.DONT_KILL_APP);*/
+        enableRebootStartUp();
     }
 
     public void cancelFetchAlarm() {
-        // If the alarm has been set, cancel it.
-        if (alarmMgr!= null) {
-            alarmMgr.cancel(alarmIntent);
-        }
-        // Disable {@code SampleBootReceiver} so that it doesn't automatically restart the
-        // alarm when the device is rebooted.
-        /*ComponentName receiver = new ComponentName(context, SampleBootReceiver.class);
+        alarmMgr.cancel(alarmIntent);
+        disableRebootStartUp();
+    }
+
+    private void enableRebootStartUp(){
+        ComponentName receiver = new ComponentName(context, RebootReceiver.class);
+        PackageManager pm = context.getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+    }
+
+    private void disableRebootStartUp(){
+        ComponentName receiver = new ComponentName(context, RebootReceiver.class);
         PackageManager pm = context.getPackageManager();
         pm.setComponentEnabledSetting(receiver,
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP);*/
+                PackageManager.DONT_KILL_APP);
     }
 }

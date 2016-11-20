@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
 
 import com.example.gryazin.rsswidget.RssApplication;
 import com.example.gryazin.rsswidget.data.network.NetworkFetchService;
@@ -23,6 +24,7 @@ public class RssAlarmReceiver extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d("ALARM", "onReceive rss alarm");
         RssApplication.getAppComponent().inject(this);
         Intent service = new Intent(context, NetworkFetchService.class);
         startWakefulService(context, service);

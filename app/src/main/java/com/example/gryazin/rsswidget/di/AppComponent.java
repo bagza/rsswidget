@@ -8,6 +8,7 @@ import com.example.gryazin.rsswidget.RssWigdetProvider;
 import com.example.gryazin.rsswidget.SettingsActivity;
 import com.example.gryazin.rsswidget.data.Repository;
 import com.example.gryazin.rsswidget.data.network.NetworkFetchService;
+import com.example.gryazin.rsswidget.data.update.RebootReceiver;
 import com.example.gryazin.rsswidget.data.update.RssAlarmReceiver;
 import com.example.gryazin.rsswidget.data.update.WidgetsRefreshService;
 
@@ -34,5 +35,6 @@ public interface AppComponent {
     void inject(RssWigdetProvider provider);
     void inject(SettingsActivity settingsActivity);
     void inject(NetworkFetchService service);
-    void inject(RssAlarmReceiver service);
+    void inject(RssAlarmReceiver receiver);
+    void inject(RebootReceiver receiver);
 }

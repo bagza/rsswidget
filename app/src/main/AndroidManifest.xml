@@ -47,6 +47,12 @@
 
         <service android:name=".data.network.NetworkFetchService"
             android:exported="false"/>
+        <receiver android:name=".data.update.RebootReceiver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

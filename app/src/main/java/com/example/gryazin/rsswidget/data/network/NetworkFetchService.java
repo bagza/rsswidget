@@ -48,6 +48,7 @@ public class NetworkFetchService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.d("ALARM", "Fetch service handle intent");
         Collection<? extends RssSettings> allSettings = repository.getAllSettings();
         processAllWidgets(allSettings);
         kickUpdateForAll(allSettings);
@@ -59,7 +60,7 @@ public class NetworkFetchService extends IntentService {
             int widgetId = settings.getAppWidgetId();
             try {
                 Collection<FeedPojo> feedPojos = fetchFeedsByUrl(channelUrl);
-                Log.d("FETCH RESULT", "feedPojos:, " + (feedPojos != null && feedPojos.size() > 0 ? ((FeedPojo) feedPojos.toArray()[0]).getTitle() : ""));
+                Log.d("ALARM", "feedPojos:, " + (feedPojos != null ? feedPojos.size() : 0));
                 Collection<FeedItem> feeds = FeedPojoMapper.mapAll(feedPojos, channelUrl);
                 repository.storeFeeds(feeds);
                 repository.saveUpdateStatus(UpdateStatus.StatusSuccess.ofSyncTimestamp(widgetId, System.currentTimeMillis()));

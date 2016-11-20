@@ -53,7 +53,7 @@ public interface Repository {
 
 
     4.  Make Alarms
-        -UPDATESCHEDULER - implement!
+        +UPDATESCHEDULER - implement!
         -test in forced doze
 
     5.  Make NetworkService.
@@ -61,7 +61,7 @@ public interface Repository {
 
     6. Polish by notes... MB tests.
 
-    - buttons bugfix: if the unwanted click has happened (lags in widget rendering), don't make offsets!
-
+    + buttons bugfix: if the unwanted click has happened (lags in widget rendering), don't make offsets!
+    - guid generation
     */
 }

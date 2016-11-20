@@ -1,5 +1,6 @@
 package com.example.gryazin.rsswidget.ui;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 
 import com.example.gryazin.rsswidget.R;
+import com.example.gryazin.rsswidget.SettingsActivity;
 import com.example.gryazin.rsswidget.data.update.WidgetsRefreshService;
 
 import java.text.SimpleDateFormat;
@@ -52,6 +54,7 @@ public class RemoteViewsRenderer {
     //TODO refactor duplicate code
     //Wisdom Use widgetId as request code, so intent are different from different widgets, overwritten otherwise.
     private void renderButtons(RemoteViews remoteViews, int appWidgetId, FeedViewModel viewModel){
+        renderSettingsButton(remoteViews, appWidgetId);
         if (viewModel.hasNext()){
             Intent intent=new Intent(context, WidgetsRefreshService.class);
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -75,5 +78,12 @@ public class RemoteViewsRenderer {
         else {
             remoteViews.setViewVisibility(R.id.button_left, View.GONE);
         }
+    }
+
+    private void renderSettingsButton(RemoteViews remoteViews, int appWidgetId){
+        Intent intent=new Intent(context, SettingsActivity.class);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        PendingIntent pi = PendingIntent.getActivity(context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setOnClickPendingIntent(R.id.settings_button, pi);
     }
 }
